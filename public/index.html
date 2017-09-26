@@ -7,7 +7,9 @@
   <meta name="description" content="Kode is a Premium Bootstrap Admin Template, It's responsive, clean coded and mobile friendly">
   <meta name="keywords" content="bootstrap, admin, dashboard, flat admin template, responsive," />
   <title>Kode - Premium Bootstrap Admin Template</title>
+  <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=FCc890ca0f7b94677b6b0ffb212f78d9"></script>
 
+  
   <!-- ========== Css Files ========== -->
   <link href="css/root.css" rel="stylesheet">
   <style type="text/css">
@@ -119,7 +121,7 @@
       <li><a href="data-table.html">Data Tables</a></li>
     </ul>
   </li>
-  <li><a href="maps.html"><span class="icon color7"><i class="fa fa-map-marker"></i></span>热力图</a></li>
+  <li><a href="hot.html"><span class="icon color7"><i class="fa fa-map-marker"></i></span>热力图</a></li>
 </ul>
 
 <div class="sidebar-plan">
@@ -141,16 +143,6 @@
 <!-- END CONTAINER -->
  <!-- //////////////////////////////////////////////////////////////////////////// --> 
 
-<!-- Start Footer -->
-<div class="row footer">
-  <div class="col-md-6 text-left">
-  Copyright © 2015 <a href="../../../../themeforest.net/user/egemem/portfolio" target="_blank">Egemem</a> All rights reserved.
-  </div>
-  <div class="col-md-6 text-right">
-    Design and Developed by <a href="../../../../themeforest.net/user/egemem/portfolio" target="_blank">Egemem</a>
-  </div> 
-</div>
-<!-- End Footer -->
 
 
 </div>
@@ -311,7 +303,7 @@
 <!-- ================================================
 jQuery Library
 ================================================ -->
-<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery1.9.min.js"></script>
 
 <!-- ================================================
 Bootstrap Core JavaScript File
@@ -386,167 +378,5 @@ Moment.js
 Below codes are only for index widgets
 ================================================ -->
 <!-- Hot Place TOP 10 -->
-<script>
-  // 基于准备好的dom，初始化echarts实例
-  var myChart = echarts.init(document.getElementById('hotplacetop10'));
-
-  myChart.setOption({
-    color: ['#FF0000'],
-    tooltip : {
-        trigger: 'axis',
-        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-        }
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    xAxis : [
-        {
-            type : 'category',
-            data : ['拉萨', '林芝', '那区', '阿里', '山南', '昌都', '日喀则'],
-            axisTick: {
-                alignWithLabel: true
-            }
-        }
-    ],
-    yAxis : [
-        {
-            type : 'value'
-        }
-    ],
-    series : [
-        {
-            name:'直接访问',
-            type:'bar',
-            barWidth: '60%',
-            data:[1232, 321, 140, 334, 451, 250, 280]
-        }
-    ]
-  })
-</script>
-
-
-<script>
-
-// set up our data series with 50 random data points
-
-var seriesData = [ [], [], [] ];
-var random = new Rickshaw.Fixtures.RandomData(20);
-
-for (var i = 0; i < 110; i++) {
-  random.addData(seriesData);
-}
-// 基于准备好的dom，初始化echarts实例
-var myChart = echarts.init(document.getElementById('HelloWorld'));
-// 指定图表的配置项和数据
-        var option = {
-            title: {
-                text: 'ECharts 入门示例'
-            },
-            tooltip: {},
-            legend: {
-                data:['销量']
-            },
-            xAxis: {
-                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-            },
-            yAxis: {},
-            series: [{
-                name: '销量',
-                type: 'bar',
-                data: [5, 20, 36, 10, 10, 20]
-            }]
-        };
-
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
-
-
-
-// instantiate our graph!
-/*
-var graph = new Rickshaw.Graph( {
-  element: document.getElementById("todaysales"),
-  renderer: 'bar',
-  series: [
-    {
-      color: "#33577B",
-      data: seriesData[0],
-      name: 'Photodune'
-    }, {
-      color: "#77BBFF",
-      data: seriesData[1],
-      name: 'Themeforest'
-    }, {
-      color: "#C1E0FF",
-      data: seriesData[2],
-      name: 'Codecanyon'
-    }
-  ]
-} );
-
-graph.render();
-
-var hoverDetail = new Rickshaw.Graph.HoverDetail( {
-  graph: graph,
-  formatter: function(series, x, y) {
-    var date = '<span class="date">' + new Date(x * 1000).toUTCString() + '</span>';
-    var swatch = '<span class="detail_swatch" style="background-color: ' + series.color + '"></span>';
-    var content = swatch + series.name + ": " + parseInt(y) + '<br>' + date;
-    return content;
-  }
-} );
-*/
-
-</script>
-
-<!-- Today Activity -->
-<script>
-// set up our data series with 50 random data points
-
-var seriesData = [ [], [], [] ];
-var random = new Rickshaw.Fixtures.RandomData(20);
-
-for (var i = 0; i < 50; i++) {
-  random.addData(seriesData);
-}
-
-// instantiate our graph!
-
-var graph = new Rickshaw.Graph( {
-  element: document.getElementById("todayactivity"),
-  renderer: 'area',
-  series: [
-    {
-      color: "#9A80B9",
-      data: seriesData[0],
-      name: 'London'
-    }, {
-      color: "#CDC0DC",
-      data: seriesData[1],
-      name: 'Tokyo'
-    }
-  ]
-} );
-
-graph.render();
-
-var hoverDetail = new Rickshaw.Graph.HoverDetail( {
-  graph: graph,
-  formatter: function(series, x, y) {
-    var date = '<span class="date">' + new Date(x * 1000).toUTCString() + '</span>';
-    var swatch = '<span class="detail_swatch" style="background-color: ' + series.color + '"></span>';
-    var content = swatch + series.name + ": " + parseInt(y) + '<br>' + date;
-    return content;
-  }
-} );
-</script>
-
-
-
 </body>
 </html>

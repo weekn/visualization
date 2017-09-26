@@ -1,0 +1,71 @@
+<div class="page-header">
+    <h1 class="title">人流热力图</h1>
+      <ol class="breadcrumb">
+        <li class="active">本模型基于7~8月份西藏地区用户数据实现</li>
+    </ol>
+
+    <!-- Start Page Header Right Div -->
+    <div class="right">
+      <div class="btn-group" role="group" aria-label="...">
+        <a href="key_point.html" class="btn btn-light">主页</a>
+        <a href="#" class="btn btn-light"><i class="fa fa-refresh"></i></a>
+        <a href="#" class="btn btn-light"><i class="fa fa-search"></i></a>
+        <a href="#" class="btn btn-light" id="topstats"><i class="fa fa-line-chart"></i></a>
+      </div>
+    </div>
+    <!-- End Page Header Right Div -->
+
+  </div>
+  <div class="row" style='height:80%;' id='ehcarts_main'></div>
+
+    <script src="js\echarts3\echarts.min.js"></script>
+  
+  <script type="text/javascript" src="js\echarts3\extension\bmap.js"></script>
+  <script type="text/javascript" src="js\echarts3\map\js\china.js"></script>
+  <script type="text/javascript">
+     var myChart = echarts.init(document.getElementById('ehcarts_main'));
+
+        // 指定图表的配置项和数据
+   
+    $.getJSON('data/echartsdata/hangzhou-tracks.json', function (data) {
+      console.log('hot---------',data);
+    var points = [].concat.apply([], data.map(function (track) {
+        return track.map(function (seg) {
+            return seg.coord.concat([1]);
+        });
+    }));
+    myChart.setOption(option = {
+        animation: false,
+        bmap: {
+            center: [120.13066322374, 30.240018034923],
+            zoom: 14,
+            roam: true
+        },
+        visualMap: {
+            show: false,
+            top: 'top',
+            min: 0,
+            max: 5,
+            seriesIndex: 0,
+            calculable: true,
+            inRange: {
+                color: ['blue', 'blue', 'green', 'yellow', 'red']
+            }
+        },
+        series: [{
+            type: 'heatmap',
+            coordinateSystem: 'bmap',
+            data: points,
+            pointSize: 5,
+            blurSize: 6
+        }]
+    });
+    if (!app.inNode) {
+        // 添加百度地图插件
+        var bmap = myChart.getModel().getComponent('bmap').getBMap();
+        bmap.addControl(new BMap.MapTypeControl());
+    }
+});
+
+
+  </script>
