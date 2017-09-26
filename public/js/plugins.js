@@ -10,6 +10,25 @@ $(document).ready(function () {
   });
 });
 
+$(document).ready(function () {
+  // 首页
+  $(".content").load('key_point.html');
+  //点击加载页面
+  $("a").on("click",function(){
+      content=$(this).attr('href');
+      if(content=='#'){
+        return false;
+        
+      }
+      $(".content").load(content,function(){
+
+      })
+  
+      return false;
+  })
+
+});
+
 /* Top Stats Show Hide */
 $(document).ready(function(){
     $("#topstats").click(function(){
