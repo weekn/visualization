@@ -20,8 +20,8 @@ function loadContent(href) {
 }
 $(document).ready(function() {
   // 首页
-  loadContent('hot.html');
-  $(document).on("click", 'a', function() {
+  //loadContent('hot.html');
+  $(document).on("click", '.sidebar-panel a', function() {
 
     var new_href = $(this).attr('href');
     if (new_href == '#') {
@@ -39,7 +39,7 @@ $(document).ready(function() {
   var win_height = window.innerHeight;
   var top_height = $("#top").height();
   var hv = (win_height) + 'px';
-  console.log(win_height, top_height, hv)
+ // console.log(win_height, top_height, hv)
   $('.content').css('height', hv)
 
   $(window).resize(function() {
