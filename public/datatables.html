@@ -1,0 +1,137 @@
+<div class="page-header">
+    <h1 class="title">用户列表</h1>
+      <ol class="breadcrumb">
+        <li class="active">本模型基于7~8月份西藏地区用户数据实现</li>
+    </ol>
+
+    <!-- Start Page Header Right Div -->
+    <div class="right">
+      <div class="btn-group" role="group" aria-label="...">
+        <a href="index.html" class="btn btn-light">Dashboard</a>
+        <a href="#" class="btn btn-light"><i class="fa fa-refresh"></i></a>
+        <a href="#" class="btn btn-light"><i class="fa fa-search"></i></a>
+        <a href="#" class="btn btn-light" id="topstats"><i class="fa fa-line-chart"></i></a>
+      </div>
+    </div>
+    <!-- End Page Header Right Div -->
+
+  </div>
+  <!-- End Page Header -->
+
+  <!-- Start Presentation -->
+ 
+  <!-- End Presentation -->
+
+
+ <!-- //////////////////////////////////////////////////////////////////////////// --> 
+<!-- START CONTAINER -->
+<div class="container-padding">
+
+
+  <!-- Start Row -->
+  <div class="row">
+
+    <!-- Start Panel -->
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-title">
+          DAtaTables
+        </div>
+        <div class="panel-body table-responsive">
+
+            <table id="example0" class="table display">
+                <thead>
+                    <tr>
+                        <th>用户</th>
+                        <th>归属地</th>
+                        <th >常驻地经纬度</th>
+                        <th>常驻地地址</th>
+                        <th>时间</th>
+                        <th>8888</th>
+                    </tr>
+                </thead>
+             
+                <tbody>
+                    <tr>
+                        <td>aa</td>
+                        <td>bb</td>
+                        <td>cc</td>
+                        <td>dd</td>
+                        <td>ee</td>
+                        <td>ff</td>
+                    </tr>
+                </tbody>
+             
+            </table>
+
+
+        </div>
+
+      </div>
+    </div>
+    <!-- End Panel -->
+
+
+
+
+
+
+  </div>
+  <!-- End Row -->
+
+
+
+
+
+
+</div>
+
+
+<script type="text/javascript" src="js/datatables/datatables.min.js"></script>
+<script type="text/javascript" src="js/datatables/datatables.buttons.min.js "></script>
+<script type="text/javascript" src="js/datatables/jszip.min.js "></script>
+<script type="text/javascript" src="js/datatables/buttons.html5.min.js "></script>
+
+
+
+<script>
+  console.log('a')
+$(document).ready(function() {
+    $('#example0').DataTable({
+       dom: 'Bfrtip',
+        buttons: [ {
+            extend: 'excelHtml5',
+             text: '下载',
+            customize: function( xlsx ) {
+                var sheet = xlsx.xl.worksheets['sheet1.xml'];
+ 
+                $('row c[r^="C"]', sheet).attr( 's', '2' );
+            }
+        } ],
+        /*processing: true,
+        serverSide: true,
+        ajax:"js/ajax.json",*/
+
+       initComplete: function () {
+            var api = this.api();
+            api.columns([1,3,4]).indexes().flatten().each( function ( i ) {
+                var column = api.column( i );
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        }
+    }
+      );
+} );
+</script>
