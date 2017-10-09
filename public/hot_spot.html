@@ -3,874 +3,67 @@
     <ol class="breadcrumb">
         <li class="active">本模型基于7~8月份部分地区用户数据实现</li>
     </ol>
-
     <!-- Start Page Header Right Div -->
-
     <!-- End Page Header Right Div -->
-
     <div class="right">
         <div class="btn-group" role="group" aria-label="...">
-            <a href="key_point.html" class="btn btn-light">热力气泡图</a>
-            <a href="key_point.html" class="btn btn-light">热力图</a>
             <a href="key_point.html" class="btn btn-light">主页</a>
-            <a href="#" class="btn btn-light"><i class="fa fa-refresh"></i></a>
+            <a href="#" class="btn btn-light" ><i class="fa fa-refresh"></i></a>
             <a href="#" class="btn btn-light"><i class="fa fa-search"></i></a>
             <a href="#" class="btn btn-light" id="topstats"><i class="fa fa-line-chart"></i></a>
         </div>
     </div>
-
 </div>
-
 <div class="container-widget">
-
-
     <!-- Start First Row -->
-    <div class="row">
-
+    <div class="row" >
         <!-- Start Chart Daily -->
-        <div class="col-md-12 col-lg-7">
-            <div class=" panel-widget widget chart-with-stats clearfix" style="height:450px;">
-
-                <div class="left">
-                    <div class="btn-group" role="group" aria-label="...">
-                        <a href="key_point.html" class="btn btn-light">热力气泡图</a>
-                        <a href="key_point.html" class="btn btn-light">热力图</a>
-
-                    </div>
-                </div>
-
-                <div id='ehcarts_main' style="widht:100%;height:100%">1</div>
+        <div class="col-md-12 col-lg-7" style='position: relative;'>
+            <div class=" panel-widget widget chart-with-stats clearfix" style="height:500px;z-index:1">
+                <h4 class="title">热点区域   
+                    <a href="#" class="btn btn-light btn-xs" id='circle'>点泡图</a>
+                    <a href="#" class="btn btn-light btn-xs" id='hot'>热力图</a>
+                </h4>
+                <div id='ehcarts_main' style="width:100%;height:100%">1</div>
+            </div>
+            <!-- province -->
+            <div style='top:0;height:500px;width:95%;position: absolute;z-index:99;display: none' id='province_div' >
+                 <i id='pro_ctl' class="fa fa-times" style='position: absolute;right:0;z-index:101'></i>
+                <div id='province_div_chart' style="height:100%;width:100%;z-index:100"></div>
             </div>
         </div>
+        
+        
         <!-- Start Files -->
         <div class="col-md-12 col-lg-5">
-            <div class="panel panel-widget" style="height:450px;"  id='ehcarts_main2'></div>
+            <div class=" panel-widget widget chart-with-stats clearfix" style="height:500px;" >
+                <h4 class="title">景区热度排名：  
+                    前
+                    <select style='height:20px;font-size:11px' id='bar_select'>
+                      <option value =10>10</option>
+                      <option value =20>20</option>
+                      <option value=40>40</option>
+                    </select>
+                    名
+                </h4>
+                <div style="widht:100%;height:100%" id='ehcarts_main2'></div>
+            </div>
         </div>
         <!-- End Files -->
     </div>
     <!-- End Chart Daily -->
-
-
-
-
 </div>
 <!--<div class="row" style='height:80%;' id='ehcarts_main'></div>-->
 <script src="js\echarts3\echarts.min.js"></script>
 <script type="text/javascript" src="js\echarts3\map\js\china.js"></script>
-
 <script type="text/javascript">
 // 基于准备好的dom，初始化echarts实例
 var myChart = echarts.init(document.getElementById('ehcarts_main'));
-data={
-    "重庆大足石刻景区": [
-        "105.723605",
-        "29.701480",
-        27
-    ],
-    " 苏州市沙家浜·虞山尚湖旅游区": [
-        "120.629780",
-        "31.617014",
-        89
-    ],
-    " 苏州园林（拙政园、虎丘山、留": [
-        "120.629878",
-        "31.324364",
-        125
-    ],
-    "杭州市西湖风景名胜区": [
-        "120.138724",
-        "30.243463",
-        99
-    ],
-    " 桂林市漓江景区": [
-        "110.526220",
-        "24.916820",
-        113
-    ],
-    " 广东省清远市连州地下河旅游景": [
-        "112.323972",
-        "25.004318",
-        91
-    ],
-    " 安徽省安庆市天柱山风景区": [
-        "116.469650",
-        "30.726500",
-        69
-    ],
-    " 北京市明十三陵景区": [
-        "116.223544",
-        "40.323042",
-        90
-    ],
-    " 晋中市介休绵山景区": [
-        "111.949200",
-        "36.884810",
-        110
-    ],
-    " 泉州市清源山景区": [
-        "118.608480",
-        "24.986710",
-        57
-    ],
-    " 南充市阆中古城旅游区": [
-        "105.978460",
-        "31.570978",
-        56
-    ],
-    " 颐和园": [
-        "116.271966",
-        "39.991664",
-        83
-    ],
-    " 武汉市东湖景区": [
-        "114.406703",
-        "30.585430",
-        120
-    ],
-    " 八达岭长城": [
-        "116.019809",
-        "40.361375",
-        29
-    ],
-    " 济南市天下第一泉景区": [
-        "117.000923",
-        "36.675807",
-        99
-    ],
-    " 河南省平顶山市尧山-中原大佛": [
-        "112.456560",
-        "33.761740",
-        15
-    ],
-    " 桂林市独秀峰-王城景区": [
-        "110.299210",
-        "25.281238",
-        49
-    ],
-    " 湖南省湘潭市韶山旅游区": [
-        "112.494459",
-        "27.911107",
-        92
-    ],
-    " 济宁市曲阜明故城（三孔）旅游": [
-        "116.993283",
-        "35.592055",
-        79
-    ],
-    " 武汉市黄陂木兰文化生态旅游区": [
-        "114.374025",
-        "30.874155",
-        121
-    ],
-    " 扬州市瘦西湖风景区": [
-        "119.425201",
-        "32.405254",
-        95
-    ],
-    " 湖北省宜昌市三峡人家风景区": [
-        "111.161345",
-        "30.779890",
-        74
-    ],
-    " 伊春市汤旺河林海奇石景区": [
-        "129.572240",
-        "48.453651",
-        82
-    ],
-    " 焦作市云台山风景名胜区": [
-        "113.377928",
-        "35.417651",
-        118
-    ],
-    " 沈阳市植物园": [
-        "123.645242",
-        "41.858039",
-        97
-    ],
-    " 无锡市鼋头渚景区": [
-        "120.224480",
-        "31.526435",
-        117
-    ],
-    " 山东烟台龙口南山景区": [
-        "120.474508",
-        "37.574176",
-        31
-    ],
-    " 辽宁大连金石滩景区": [
-        "123.409099",
-        "41.832194",
-        54
-    ],
-    " 阿坝州汶川特别旅游区": [
-        "103.580675",
-        "31.474630",
-        74
-    ],
-    " 张家界武陵源—天门山旅游区": [
-        "110.547580",
-        "29.347827",
-        39
-    ],
-    " 丽江市丽江古城景区": [
-        "100.238632",
-        "26.869191",
-        51
-    ],
-    " 洛阳市龙门石窟景区": [
-        "112.475838",
-        "34.555033",
-        44
-    ],
-    "恭王府景区": [
-        "103.607572",
-        "31.007925",
-        19
-    ],
-    " 武隆喀斯特旅游区(天生三桥.仙": [
-        "107.907304",
-        "29.226378",
-        110
-    ],
-    " 大连老虎滩海洋公园.老虎滩极": [
-        "121.678039",
-        "38.877120",
-        26
-    ],
-    " 吉林长春净月潭景区": [
-        "125.454143",
-        "43.799657",
-        81
-    ],
-    " 湖北省神农架旅游区": [
-        "114.298572",
-        "30.584355",
-        36
-    ],
-    " 烟台市蓬莱阁旅游区(三仙山-八": [
-        "120.781710",
-        "37.823049",
-        31
-    ],
-    " 中国科学院西双版纳热带植物园": [
-        "101.277959",
-        "21.919786",
-        38
-    ],
-    " 江西省庐山风景名胜区": [
-        "115.981272",
-        "29.569718",
-        21
-    ],
-    " 河北保定野三坡景区": [
-        "115.452023",
-        "39.675163",
-        94
-    ],
-    " 秦皇岛市山海关景区": [
-        "119.757916",
-        "39.999387",
-        50
-    ],
-    " 衢州市开化根宫佛国文化旅游景": [
-        "118.414435",
-        "29.136503",
-        30
-    ],
-    " 湖南省长沙市岳麓山·橘子洲旅": [
-        "112.980464",
-        "28.186442",
-        15
-    ],
-    " 绵阳市北川羌城旅游区": [
-        "104.461616",
-        "31.831505",
-        21
-    ],
-    " 黑龙江黑河五大连池景区": [
-        "126.197694",
-        "48.512688",
-        52
-    ],
-    " 上海野生动物园": [
-        "121.722162",
-        "31.055220",
-        127
-    ],
-    " 乐山市乐山大佛景区": [
-        "103.773528",
-        "29.545084",
-        92
-    ],
-    " 天津盘山风景名胜区": [
-        "117.268196",
-        "40.082207",
-        105
-    ],
-    " 重庆市南川金佛山-神龙峡景区": [
-        "107.095110",
-        "29.155801",
-        69
-    ],
-    " 三亚市南山文化旅游区": [
-        "109.207577",
-        "18.291479",
-        76
-    ],
-    "   北京市奥林匹克公园": [
-        "116.394777",
-        "39.995209",
-        38
-    ],
-    " 酉阳桃花源旅游景区": [
-        "121.287511",
-        "29.683007",
-        18
-    ],
-    " 登封市嵩山少林景区": [
-        "112.950167",
-        "34.512067",
-        21
-    ],
-    " 常州市环球恐龙城休闲旅游区": [
-        "120.001364",
-        "31.823039",
-        59
-    ],
-    " 苏州市同里古镇景区": [
-        "120.723028",
-        "31.152181",
-        126
-    ],
-    " 厦门市鼓浪屿风景名胜区": [
-        "118.073462",
-        "24.446392",
-        33
-    ],
-    " 湖北省十堰市武当山风景区": [
-        "111.022840",
-        "32.408747",
-        81
-    ],
-    " 桂林市乐满地度假世界": [
-        "110.678548",
-        "25.586229",
-        24
-    ],
-    " 深圳华侨城旅游度假区": [
-        "113.984660",
-        "22.538816",
-        53
-    ],
-    " 分界洲岛旅游区": [
-        "110.199902",
-        "18.576314",
-        37
-    ],
-    " 重庆巫山小三峡-小小三峡": [
-        "109.881935",
-        "31.075146",
-        21
-    ],
-    " 江苏省姜堰市溱湖旅游景区": [
-        "120.091010",
-        "32.624060",
-        60
-    ],
-    " 天津古文化街旅游区": [
-        "117.191447",
-        "39.145368",
-        94
-    ],
-    " 浙江省绍兴市鲁迅故里沈园景区": [
-        "120.590290",
-        "29.990570",
-        103
-    ],
-    " 内蒙古鄂尔多斯成吉思汗陵旅游": [
-        "109.825963",
-        "39.363330",
-        19
-    ],
-    " 上海科技馆": [
-        "121.542104",
-        "31.218457",
-        26
-    ],
-    " 山东威海刘公岛景区": [
-        "122.185674",
-        "37.502189",
-        99
-    ],
-    " 泰安市泰山景区": [
-        "117.129984",
-        "36.189313",
-        68
-    ],
-    " 南宁市青秀山旅游区": [
-        "108.387337",
-        "22.789759",
-        111
-    ],
-    " 黄山市黄山风景区": [
-        "118.225001",
-        "30.108863",
-        105
-    ],
-    " 保定市安新白洋淀景区": [
-        "115.971067",
-        "38.940628",
-        31
-    ],
-    " 昆明市石林风景区": [
-        "103.349442",
-        "24.813127",
-        57
-    ],
-    " 惠州市罗浮山景区": [
-        "114.405729",
-        "23.081303",
-        29
-    ],
-    " 福建省土楼（永定·南靖）旅游": [
-        "116.837945",
-        "24.597867",
-        69
-    ],
-    " 承德避暑山庄及周围寺庙景区": [
-        "117.935193",
-        "40.994793",
-        60
-    ],
-    " 金华市东阳横店影视城景区": [
-        "120.363502",
-        "29.157043",
-        46
-    ],
-    " 苏州市周庄古镇景区": [
-        "120.845476",
-        "31.126144",
-        77
-    ],
-    " 黄山市古徽州文化旅游区": [
-        "118.339743",
-        "29.825201",
-        38
-    ],
-    " 衡阳市南岳衡山旅游区": [
-        "112.735451",
-        "27.237920",
-        32
-    ],
-    " 湖北省恩施州神龙溪纤夫文化旅": [
-        "109.151511",
-        "29.680439",
-        88
-    ],
-    "河南安阳殷墟景区": [
-        "114.130207",
-        "36.130585",
-        26
-    ],
-    " 舟山市普陀山风景名胜区": [
-        "122.321004",
-        "29.941405",
-        109
-    ],
-    " 嘉兴市桐乡乌镇古镇旅游区": [
-        "120.493510",
-        "30.741430",
-        38
-    ],
-    " 大理市崇圣寺三塔文化旅游区": [
-        "100.148771",
-        "25.705636",
-        48
-    ],
-    "吉安市井冈山风景旅游区": [
-        "114.166111",
-        "26.570529",
-        90
-    ],
-    " 宁德市白水洋-鸳鸯溪旅游区": [
-        "119.111069",
-        "27.053608",
-        57
-    ],
-    " 晋中市乔家大院文化园区": [
-        "112.433645",
-        "37.407076",
-        76
-    ],
-    " 江西省上饶市三清山旅游景区": [
-        "118.062946",
-        "28.903974",
-        127
-    ],
-    " 梅州市雁南飞茶田景区": [
-        "116.364997",
-        "24.386491",
-        47
-    ],
-    " 丽江市玉龙雪山景区": [
-        "100.250953",
-        "27.117075",
-        109
-    ],
-    " 宜昌市三峡大坝旅游区": [
-        "111.313612",
-        "30.750943",
-        12
-    ],
-    " 浙江省杭州西溪湿地旅游区": [
-        "120.066317",
-        "30.268055",
-        21
-    ],
-    " 重庆市万盛经开区黑山谷景区": [
-        "106.928131",
-        "28.958055",
-        40
-    ],
-    " 温州市雁荡山风景名胜区": [
-        "121.095871",
-        "28.352020",
-        72
-    ],
-    " 安顺市龙宫景区": [
-        "105.932188",
-        "26.245544",
-        72
-    ],
-    " 安徽省宣城市绩溪龙川景区": [
-        "118.668130",
-        "30.075811",
-        54
-    ],
-    " 山东省沂蒙山旅游区": [
-        "117.689452",
-        "36.206837",
-        48
-    ],
-    " 长白山景区": [
-        "128.178131",
-        "42.184401",
-        64
-    ],
-    " 福建省三明市泰宁风景旅游区": [
-        "117.102561",
-        "26.864915",
-        65
-    ],
-    "佛山市西樵山景区": [
-        "112.976396",
-        "22.926416",
-        114
-    ],
-    " 河北省石家庄市西柏坡景区": [
-        "113.943732",
-        "38.342024",
-        31
-    ],
-    " 南阳市西峡伏牛山老界岭·恐龙": [
-        "111.685210",
-        "33.228466",
-        23
-    ],
-    " 枣庄市台儿庄古城景区": [
-        "117.738661",
-        "34.558029",
-        36
-    ],
-    " 深圳市观澜湖休闲旅游区": [
-        "114.069435",
-        "22.733271",
-        90
-    ],
-    " 三亚市南山大小洞天旅游区": [
-        "109.177071",
-        "18.304456",
-        25
-    ],
-    " 南京市钟山风景名胜区-中山陵": [
-        "118.853336",
-        "32.059381",
-        45
-    ],
-    " 大同市云冈石窟": [
-        "113.134910",
-        "40.112915",
-        69
-    ],
-    " 中央电视台无锡影视基地三国水": [
-        "120.238575",
-        "31.483707",
-        75
-    ],
-    " 镇江市金山·焦山·北固山旅游": [
-        "119.457336",
-        "32.217855",
-        66
-    ],
-    " 佛山市长鹿旅游休博园": [
-        "113.122717",
-        "23.028762",
-        88
-    ],
-    " 成都市青城山--都江堰旅游景区": [
-        "103.613703",
-        "31.001131",
-        21
-    ],
-    " 拉萨布达拉宫景区": [
-        "91.1185740",
-        "29.655474",
-        122
-    ],
-    " 镇江市句容茅山景区": [
-        "119.307273",
-        "31.781633",
-        104
-    ],
-    " 广东省韶关市丹霞山景区": [
-        "113.749261",
-        "25.036646",
-        30
-    ],
-    " 洛阳市龙潭大峡谷景区": [
-        "112.015990",
-        "34.974390",
-        28
-    ],
-    " 安徽省黄山市皖南古村落—西递": [
-        "118.367490",
-        "29.937105",
-        39
-    ],
-    " 广州市长隆旅游度假区": [
-        "113.329929",
-        "23.004968",
-        41
-    ],
-    " 毕节市百里杜鹃景区": [
-        "105.285010",
-        "27.301693",
-        37
-    ],
-    " 湖南省岳阳市岳阳楼—君山岛景": [
-        "113.120751",
-        "29.366784",
-        53
-    ],
-    " 迪庆州香格里拉普拉措景区": [
-        "123.406153",
-        "41.795273",
-        23
-    ],
-    " 上海东方明珠广播电视塔": [
-        "121.499674",
-        "31.239879",
-        22
-    ],
-    " 山西晋城皇城相府生态文化旅游": [
-        "112.582786",
-        "35.512008",
-        17
-    ],
-    "南通市濠河景区": [
-        "120.871265",
-        "32.015686",
-        43
-    ],
-    " 阜阳市颍上八里河景区": [
-        "116.285225",
-        "32.571732",
-        113
-    ],
-    " 安顺市黄果树大瀑布景区": [
-        "105.666631",
-        "25.981143",
-        75
-    ],
-    " 黑龙江牡丹江镜泊湖景区": [
-        "129.618602",
-        "44.582962",
-        66
-    ],
-    " 宁德市福鼎太姥山旅游区": [
-        "120.220121",
-        "27.318106",
-        18
-    ],
-    " 山东青岛崂山景区": [
-        "120.595865",
-        "36.129290",
-        118
-    ],
-    " 广安市邓小平故里旅游区": [
-        "106.637200",
-        "30.518730",
-        36
-    ],
-    " 苏州市金鸡湖景区": [
-        "120.698399",
-        "31.312603",
-        123
-    ],
-    " 长沙市花明楼景区": [
-        "112.628208",
-        "28.056617",
-        53
-    ],
-    " 宜昌市长阳清江画廊景区": [
-        "111.140320",
-        "30.464220",
-        95
-    ],
-    " 忻州市五台山风景名胜区": [
-        "113.584593",
-        "38.994542",
-        97
-    ],
-    " 上饶市婺源江湾景区": [
-        "118.054368",
-        "29.356861",
-        97
-    ],
-    " 天坛公园": [
-        "116.410638",
-        "39.881265",
-        122
-    ],
-    " 苏州市吴中太湖旅游区": [
-        "116.315320",
-        "30.460120",
-        15
-    ],
-    " 河南洛阳白云山景区": [
-        "112.085231",
-        "34.127124",
-        114
-    ],
-    " 宁波市奉化溪口-滕头旅游景区": [
-        "121.389762",
-        "29.700653",
-        43
-    ],
-    " 南平市武夷山风景名胜区": [
-        "117.992325",
-        "27.685395",
-        105
-    ],
-    " 河南省洛阳栾川老君山·鸡冠洞": [
-        "111.652692",
-        "33.720340",
-        87
-    ],
-    " 杭州市千岛湖风景名胜区": [
-        "119.040540",
-        "29.600430",
-        79
-    ],
-    " 池州市九华山风景区": [
-        "117.803613",
-        "30.479266",
-        96
-    ],
-    " 江西省鹰潭市龙虎山旅游景区": [
-        "116.997973",
-        "28.068044",
-        38
-    ],
-    "内蒙古鄂尔多斯响沙湾旅游景区": [
-        "109.951789",
-        "40.243748",
-        80
-    ],
-    " 故宫博物院": [
-        "116.397176",
-        "39.917248",
-        101
-    ],
-    " 长春市伪满皇宫博物院": [
-        "125.348406",
-        "43.905729",
-        27
-    ],
-    " 海南呀诺达雨林文化旅游区": [
-        "109.650480",
-        "18.458210",
-        102
-    ],
-    " 阿坝藏族羌族自治州九寨沟旅游": [
-        "103.918200",
-        "33.265470",
-        103
-    ],
-    " 河南开封清明上河园": [
-        "114.340751",
-        "34.808914",
-        88
-    ],
-    " 无锡市灵山景区": [
-        "120.103551",
-        "31.421357",
-        34
-    ],
-    " 哈尔滨市太阳岛景区": [
-        "126.591109",
-        "45.785818",
-        82
-    ],
-    " 常州市天目湖景区": [
-        "119.422593",
-        "31.317707",
-        116
-    ],
-    " 六安市天堂寨旅游景区": [
-        "115.803508",
-        "31.196979",
-        19
-    ],
-    " 南京市夫子庙-秦淮风光带景区": [
-        "118.788939",
-        "32.020632",
-        35
-    ],
-    " 四川省阿坝州黄龙景区": [
-        "103.868491",
-        "32.756446",
-        114
-    ],
-    " 乐山市峨眉山景区": [
-        "103.530507",
-        "29.629480",
-        70
-    ],
-    " 景德镇古窑民俗博览区": [
-        "117.179796",
-        "29.286077",
-        27
-    ],
-    " 浙江省嘉兴市南湖旅游区": [
-        "120.749953",
-        "30.764652",
-        14
-    ],
-    " 广东省广州市白云山风景区": [
-        "113.297909",
-        "23.180097",
-        54
-    ],
-    " 武汉市黄鹤楼公园": [
-        "114.303818",
-        "30.544407",
-        103
-    ]
-}
-
-
-var convertData = function (data) {
+var myChart2;
+var province_chart;
+var option;
+var data;
+var convertData = function(data) {
     var res = [];
     for (var name_ in data) {
 
@@ -884,144 +77,313 @@ var convertData = function (data) {
     return res;
 };
 
-option = {
-    title: {
-        text: '全国主要景点热度',
-        subtext: 'hot of spots',
-        left: 'center'
-    },
-    tooltip : {
-        trigger: 'item'
-    },
-    geo: {
-        map: 'china',
-        label: {
-            emphasis: {
-                show: false
-            }
+var circle_hot = function(data) {
+    myChart.dispose();
+    myChart = echarts.init(document.getElementById('ehcarts_main'));
+    option = {
+
+        tooltip: {
+            trigger: 'item'
         },
-        roam: true,
-        selectedMode:'single',
-        itemStyle: {
-            normal: {
-                areaColor: '#FFFFFF',
-                borderColor: '#404a59'
-            },
-            emphasis: {
-                areaColor: '#DDDDDD'
-            }
-        }
-    },
-    series : [
-        {
-            name: '景点热度',
-            type: 'scatter',
-            coordinateSystem: 'geo',
-            data: convertData(data),
-            symbolSize: function (val) {
-                return val[2] / 6;
-            },
+        geo: {
+            map: 'china',
             label: {
-                normal: {
-                    formatter: '{b}',
-                    position: 'right',
+                emphasis: {
                     show: false
+                }
+            },
+            roam: true,
+            selectedMode: 'single',
+            itemStyle: {
+                normal: {
+                    areaColor: '#FFFFFF',
+                    borderColor: '#404a59'
                 },
                 emphasis: {
-                    show: true
-                }
-            },
-            itemStyle: {
-                normal: {
-                    color: '#FF6666'
+                    areaColor: '#DDDDDD'
                 }
             }
         },
-        {
-            name: 'Top 5',
-            type: 'effectScatter',
-            coordinateSystem: 'geo',
-            data: convertData(objKeySort(data)),
-            symbolSize: function (val) {
-                return val[2] / 5;
+        series: [{
+                name: 'a',
+                type: 'scatter',
+                coordinateSystem: 'geo',
+                data: convertData(data),
+                symbolSize: function(val) {
+                    return val[2] / 6;
+                },
+                label: {
+                    normal: {
+                        formatter: '{b}',
+                        position: 'right',
+                        show: false
+                    },
+                    emphasis: {
+                        show: true
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: '#FF6666'
+                    }
+                }
             },
-            showEffectOn: 'render',
-            rippleEffect: {
-                brushType: 'stroke'
-            },
-            hoverAnimation: true,
+            {
+                name: 'Top 5',
+                type: 'effectScatter',
+                coordinateSystem: 'geo',
+                data: convertData(objKeySort(data, 10)),
+                symbolSize: function(val) {
+                    return val[2] / 5;
+                },
+                showEffectOn: 'render',
+                rippleEffect: {
+                    brushType: 'stroke'
+                },
+                hoverAnimation: true,
+                label: {
+                    normal: {
+                        formatter: '{b}',
+                        position: 'right',
+                        show: false
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: '#FF3300',
+                        shadowBlur: 10,
+                        shadowColor: '#FF9900'
+                    }
+                },
+                zlevel: 1
+            }
+        ]
+    };
+
+    myChart.setOption(option);
+    myChart.on('geoselectchanged', function(param){
+        geoselectfun(param);
+    });
+
+};
+
+var pure_hot = function(data) {
+    myChart.dispose();
+    myChart = echarts.init(document.getElementById('ehcarts_main'));
+    option = {
+        tooltip: {
+            trigger: 'item'
+        },
+        geo: {
+            map: 'china',
             label: {
-                normal: {
-                    formatter: '{b}',
-                    position: 'right',
+                emphasis: {
                     show: false
                 }
             },
+            roam: true,
+            selectedMode: 'single',
             itemStyle: {
                 normal: {
-                    color: '#FF3300',
-                    shadowBlur: 10,
-                    shadowColor: '#FF9900'
+                    areaColor: '#FFFFFF',
+                    borderColor: '#404a59'
+                },
+                emphasis: {
+                    areaColor: '#DDDDDD'
                 }
-            },
-            zlevel: 1
-        }
-    ]
+            }
+        },
+        visualMap: {
+            show: false,
+            top: 'top',
+            min: 0,
+            max: 5,
+            seriesIndex: 0,
+            calculable: true,
+            inRange: {
+                color: ['blue', 'blue', 'green', 'yellow', 'red']
+            }
+        },
+        series: [{
+                name: '景点热度',
+                type: 'heatmap',
+                coordinateSystem: 'geo',
+                data: convertData(data),
+                pointSize: 5,
+                blurSize: 6
+            }
+
+
+        ]
+    };
+    myChart.setOption(option);
+    myChart.on('geoselectchanged', function(param){
+        geoselectfun(param);
+    });
 };
 
-
-function objKeySort(obj) {//排序的函数
-    var newkey = Object.keys(obj).sort(function(key1,key2){
-
-        return obj[key2][2]-obj[key1][2]
-    }).slice(0,10);
-    //先用Object内置类的keys方法获取要排序对象的属性名，再利用Array原型上的sort方法对获取的属性名进行排序，newkey是一个数组
-    var newObj = {};//创建一个新的对象，用于存放排好序的键值对
-    for (var i = 0; i < newkey.length; i++) {//遍历newkey数组
-        newObj[newkey[i]] = obj[newkey[i]];//向新创建的对象中按照排好的顺序依次增加键值对
+var bar_plot = function(data,n) {
+    var obj = objKeySort(data, n);
+    console.log(obj);
+    var y = [];
+    var x = [];
+    for (var key in obj) {
+        y.push(key);
+        x.push(obj[key][2]);
     }
+    var option2 = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'value',
+            boundaryGap: [0, 0.01],
+            min: 90,
+            max: 140
+        },
+        yAxis: {
+            type: 'category',
+            data: y.reverse()
+        },
+        series: [{
+            type: 'bar',
+            data: x.reverse()
+        }]
+    };
+    try{
+        myChart2.dispose();
+    }catch(e){
 
-    return newObj;//返回排好序的新对象
+    }
+    myChart2 = echarts.init(document.getElementById('ehcarts_main2'));
+    myChart2.setOption(option2);
 }
 
 
-myChart.on('geoselectchanged', function(param) {
-    var selected=param.batch[0].selected;
+$(document).ready(function() {
+
+    $("#hot").click(function() {
+        pure_hot(data);
+    });
+    $("#circle").click(function() {
+        circle_hot(data);
+    });
+    $("#bar_select").change(function () {  
+        var v = $(this).children('option:selected').val(); 
+        bar_plot(data,v);
+    }); 
+    $('#pro_ctl').click(function(){
+        try{
+            province_chart.dispose();
+        }catch(e){};
+        $('#province_div').animate({width:'toggle'});
+    }) 
+    $.getJSON('data/spot.json', function(json_data) {
+        data = json_data;
+        circle_hot(data);
+        bar_plot(data,10);
+        // pure_hot(data);
+    });
+
+});
+
+
+
+
+function objKeySort(obj, n) { //排序的函数
+    var newkey = Object.keys(obj).sort(function(key1, key2) {
+
+        return obj[key2][2] - obj[key1][2]
+    }).slice(0, n);
+    //先用Object内置类的keys方法获取要排序对象的属性名，再利用Array原型上的sort方法对获取的属性名进行排序，newkey是一个数组
+    var newObj = {}; //创建一个新的对象，用于存放排好序的键值对
+    for (var i = 0; i < newkey.length; i++) { //遍历newkey数组
+        newObj[newkey[i]] = obj[newkey[i]]; //向新创建的对象中按照排好的顺序依次增加键值对
+    }
+
+    return newObj; //返回排好序的新对象
+}
+var provinceConvert=function(selected_province){
+
+    
+    switch(selected_province){
+        case '辽宁':selected_province='liaoning';break 
+        case '吉林':selected_province='jilin';break 
+        case '黑龙江':selected_province='heilongjiang';break 
+        case '河北':selected_province='hebei';break 
+        case '山西':selected_province='shanxi';break 
+        case '陕西':selected_province='shanxi';break 
+        case '山东':selected_province='shandong';break 
+        case '安徽':selected_province='anhui';break 
+        case '江苏':selected_province='jiangsu';break 
+        case '浙江':selected_province='zhejiang';break 
+        case '河南':selected_province='henan';break 
+        case '湖北':selected_province='hubei';break 
+        case '湖南':selected_province='hunan';break 
+        case '江西':selected_province='jiangxi';break 
+        case '台湾':selected_province='taiwan';break 
+        case '福建':selected_province='fujian';break 
+        case '云南':selected_province='yunnan';break 
+        case '海南':selected_province='hainan';break 
+        case '四川':selected_province='sichuan';break 
+        case '贵州':selected_province='guizhou';break 
+        case '广东':selected_province='guangdong';break 
+        case '甘肃':selected_province='gansu';break 
+        case '青海':selected_province='qinghai';break 
+        case '西藏':selected_province='xizang';break 
+        case '新疆':selected_province='xinjiang';break 
+        case '广西':selected_province='guangxi';break 
+        case '内蒙古':selected_province='neimenggu';break 
+        case '宁夏':selected_province='ningxia';break 
+        case '北京':selected_province='beijing';break 
+        case '天津':selected_province='tianjin';break 
+        case '上海':selected_province='shanghai';break 
+        case '重庆 ':selected_province='chongqing';break
+
+    }
+    return selected_province;
+}
+var geoselectfun = function(param) {
+    var selected = param.batch[0].selected;
     var selected_province;
-    for(var province in selected){
-        if(selected[province]){
-            selected_province=province;
+    for (var province in selected) {
+        if (selected[province]) {
+            selected_province = province;
             break;
         }
     }
-    console.log(param.batch[0].selected);
+    
 
-    // "113.943732", "38.342024",
-    $.getJSON('js/echarts3/map/json/province/hebei.json', function (json) {
+    var pro_pinyin=provinceConvert(selected_province);
+    console.log(pro_pinyin);
+    
+    $.getJSON('js/echarts3/map/json/province/'+pro_pinyin+'.json', function(json) {
         //json.features=json.features.slice(0,1);
         console.log(json);
         //console.log(json.features[0]['geometry']['coordinates'])
         echarts.registerMap('河北', json);
-
-        var myChart2 = echarts.init(document.getElementById('ehcarts_main2'));
-        var option2 = {
+        
+        var option_p = {
+            backgroundColor:'rgba(250, 250, 250, 0.85)' ,
             title: {
-                text: '省的',
-                subtext: 'hot of spots',
+                text: selected_province+'省详情',
                 left: 'center'
             },
-            tooltip : {
+            tooltip: {
                 trigger: 'item'
             },
             geo: {
                 map: '河北',
-                label: {
-                    emphasis: {
-                        show: false
-                    }
-                },
-                selectedMode:'single',
-                roam: true,
+                selectedMode: false,
                 itemStyle: {
                     normal: {
                         areaColor: '#FFFFFF',
@@ -1031,80 +393,49 @@ myChart.on('geoselectchanged', function(param) {
                         areaColor: '#DDDDDD'
                     }
                 },
-                zoom:0.5,
-                left:'left',
-                top:'middle'
+                zoom: 1,
+                left: 'center',
+                top: 'middle'
 
             },
-            // series : [
-            //     {
-            //         name: '景点热度',
-            //         type: 'scatter',
-            //         coordinateSystem: 'geo',
-            //         data: convertData(data),
-            //         symbolSize: function (val) {
-            //             return val[2] / 6;
-            //         },
-            //         label: {
-            //             normal: {
-            //                 formatter: '{b}',
-            //                 position: 'right',
-            //                 show: false
-            //             },
-            //             emphasis: {
-            //                 show: true
-            //             }
-            //         },
-            //         itemStyle: {
-            //             normal: {
-            //                 color: '#FF6666'
-            //             }
-            //         }
-            //     },
-            //      {
-            //         name: 'Top 5',
-            //         type: 'effectScatter',
-            //         coordinateSystem: 'geo',
-            //         data: convertData(objKeySort(data)),
-            //         symbolSize: function (val) {
-            //             return val[2] / 5;
-            //         },
-            //         showEffectOn: 'render',
-            //         rippleEffect: {
-            //             brushType: 'stroke'
-            //         },
-            //         hoverAnimation: true,
-            //         label: {
-            //             normal: {
-            //                 formatter: '{b}',
-            //                 position: 'right',
-            //                 show: false
-            //             }
-            //         },
-            //         itemStyle: {
-            //             normal: {
-            //                 color: '#FF3300',
-            //                 shadowBlur: 10,
-            //                 shadowColor: '#FF9900'
-            //             }
-            //         },
-            //         zlevel: 1
-            //     }
-
-            // ]
+            series: [{
+                name: 'a',
+                type: 'scatter',
+                coordinateSystem: 'geo',
+                data: convertData(data),
+                symbolSize: function(val) {
+                    return val[2] / 6;
+                },
+                label: {
+                    normal: {
+                        formatter: '{b}',
+                        position: 'right',
+                        show: false
+                    },
+                    emphasis: {
+                        show: true
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: '#FF6666'
+                    }
+                }
+            }]
         };
-        myChart2.setOption(option2);
+        
+        try{
+            province_chart.dispose();
+        }catch(e){}
 
-
-
+        $('#province_div').animate({width:'toggle'},function(){
+            province_chart = echarts.init(document.getElementById('province_div_chart'));
+            province_chart.setOption(option_p);
+        });
+        
+        
 
     });
-
-
-})
-
-myChart.setOption(option);
-
-
-
+}
+myChart.on('geoselectchanged', geoselectfun(param));
 </script>
