@@ -1,8 +1,16 @@
-<div style="height:500px;width:100%" id="chart" ></div>
+<div style="height:5rem;line-height: 5rem;width:100%;border-bottom: 1px solid rgb(213,213,213);;padding-left:1.8rem;padding-right:1.8rem;">
+	<div style="width:12%;font-size:1.8rem;float:left">热门景点</div>
+	<div class='entry' style="line-height: 5rem">景点图</div>
+	<div class='entry' style="line-height: 5rem">热力图</div>
+
+
+</div>
+<div style="height:500px;width:50%;float:left" id="hot_map_chart" ></div>
+<div style="height:500px;width:50%;float:left" id="hot_bar_chart" ></div>
 <script type="text/javascript" src="plugins\js\echarts3\map\js\china.js"></script>
 <script type="text/javascript">
-var myChart = echarts.init(document.getElementById('chart'));
-var myChart2;
+var hot_map_chart = echarts.init(document.getElementById('hot_map_chart'));
+var hot_bar_chart;
 var province_chart;
 var option;
 var data;
@@ -21,8 +29,8 @@ var convertData = function(data) {
 };
 
 var circle_hot = function(data) {
-    myChart.dispose();
-    myChart = echarts.init(document.getElementById('chart'));
+    hot_map_chart.dispose();
+    hot_map_chart = echarts.init(document.getElementById('hot_map_chart'));
     option = {
 
         tooltip: {
@@ -39,7 +47,7 @@ var circle_hot = function(data) {
             selectedMode: 'single',
             itemStyle: {
                 normal: {
-                    areaColor: '#FFFFFF',
+                    areaColor: 'rgb(241,247,252)',
                     borderColor: '#404a59'
                 },
                 emphasis: {
@@ -67,7 +75,7 @@ var circle_hot = function(data) {
                 },
                 itemStyle: {
                     normal: {
-                        color: '#FF6666'
+                        color: 'rgb(45,143,202)'
                     }
                 }
             },
@@ -93,7 +101,7 @@ var circle_hot = function(data) {
                 },
                 itemStyle: {
                     normal: {
-                        color: '#FF3300',
+                        color: 'rgb(43,117,191)',
                         shadowBlur: 10,
                         shadowColor: '#FF9900'
                     }
@@ -103,16 +111,16 @@ var circle_hot = function(data) {
         ]
     };
 
-    myChart.setOption(option);
-    myChart.on('geoselectchanged', function(param){
+    hot_map_chart.setOption(option);
+    hot_map_chart.on('geoselectchanged', function(param){
         geoselectfun(param);
     });
 
 };
 
 var pure_hot = function(data) {
-    myChart.dispose();
-    myChart = echarts.init(document.getElementById('chart'));
+    hot_map_chart.dispose();
+    hot_map_chart = echarts.init(document.getElementById('hot_map_chart'));
     option = {
         tooltip: {
             trigger: 'item'
@@ -128,11 +136,11 @@ var pure_hot = function(data) {
             selectedMode: 'single',
             itemStyle: {
                 normal: {
-                    areaColor: '#FFFFFF',
+                    areaColor: 'rgb(211,228,245)',
                     borderColor: '#404a59'
                 },
                 emphasis: {
-                    areaColor: '#DDDDDD'
+                    areaColor: 'rgb(211,228,245)'
                 }
             }
         },
@@ -159,10 +167,63 @@ var pure_hot = function(data) {
 
         ]
     };
-    myChart.setOption(option);
-    myChart.on('geoselectchanged', function(param){
+    hot_map_chart.setOption(option);
+    hot_map_chart.on('geoselectchanged', function(param){
         geoselectfun(param);
     });
+};
+
+var bar_plot = function(data,n) {
+    var obj = objKeySort(data, n);
+    console.log(obj);
+    var y = [];
+    var x = [];
+    for (var key in obj) {
+        y.push(key);
+        x.push(obj[key][2]);
+    }
+    var option2 = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'value',
+            boundaryGap: [0, 0.01],
+            min: 90,
+            max: 140
+        },
+        yAxis: {
+            type: 'category',
+            data: y.reverse()
+        },
+        series: [{
+            type: 'bar',
+            data: x.reverse(),
+            itemStyle:{
+            	normal:{
+            		color:'rgb(43,116,189)',
+            		borderColor:'rgb(34,93,153)'
+            	}
+            }
+
+        }]
+    };
+    try{
+        hot_bar_chart.dispose();
+    }catch(e){
+
+    }
+    hot_bar_chart = echarts.init(document.getElementById('hot_bar_chart'));
+    hot_bar_chart.setOption(option2);
 };
 
 $(document).ready(function() {
@@ -186,7 +247,7 @@ $(document).ready(function() {
     $.getJSON('pro_traveler/spot.json', function(json_data) {
         data = json_data;
         circle_hot(data);
-        bar_plot(data,10);
+        bar_plot(data,20);
         // pure_hot(data);
     });
 

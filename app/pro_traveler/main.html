@@ -58,7 +58,10 @@
 <script>
 $(document).ready(function(){
 	
-	$('#hot_spot').load('pro_traveler/hot_spot.html');
+	//$('#hot_spot').load('pro_traveler/hot_spot.html');
+	$.get('pro_traveler/hot_spot.html', function(data) {
+   		$("#hot_spot").html(data);
+  	})
 
 })
 
