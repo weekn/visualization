@@ -5,8 +5,21 @@
 
 
 </div>
-<div style="height:500px;width:50%;float:left" id="hot_map_chart" ></div>
-<div style="height:500px;width:50%;float:left" id="hot_bar_chart" ></div>
+<div class="row">
+      <div class="col-xs-6">
+      	<div style="font-size:1.3rem;padding-top: 3rem;padding-left:3rem;position: absolute;">热度地图</div>
+		<div style="height:500px;width:100%;margin-top:1.7rem" id="hot_map_chart" ></div>
+
+      </div>
+      <div class="col-xs-6">
+      	<div style="font-size:1.3rem;padding-top: 3rem;padding-left:3rem;position: absolute;">热度排名</div>
+		<div style="height:500px;width:100%;margin-top:1.7rem" id="hot_bar_chart" ></div>
+
+      </div>      
+</div>
+
+
+
 <script type="text/javascript" src="plugins\js\echarts3\map\js\china.js"></script>
 <script type="text/javascript">
 var hot_map_chart = echarts.init(document.getElementById('hot_map_chart'));
@@ -43,7 +56,9 @@ var circle_hot = function(data) {
                     show: false
                 }
             },
-            roam: true,
+            zoom:1.2,
+            top:'middle',
+            roam: false,
             selectedMode: 'single',
             itemStyle: {
                 normal: {
