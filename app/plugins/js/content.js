@@ -26,3 +26,19 @@ $(document).ready(function() {
 
 })
 
+$(document).ready(function() {
+	$(document).on('click','.container_select',function(){
+		$(this).parent().children().removeClass('container_select_active');
+		$(this).addClass('container_select_active');
+		
+
+	});
+	$(document).on('mouseover','.container_select',function(){
+		
+	})
+	$(document).on('mouseout','.container_select',function(){
+		
+		
+	})
+
+})

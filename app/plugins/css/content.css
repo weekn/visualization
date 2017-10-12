@@ -6,6 +6,22 @@
 		padding-left:1.8rem;
 		padding-right:1.8rem;
 	}
+	.container_title{
+        width:12%;
+        font-size:1.8rem;
+        float:left
+    }
+    .container_select{
+        float:left;
+        margin-left: 1.5rem;
+        margin-right: 1.5rem;
+        height:4rem;
+        cursor:pointer;
+        color:rgb(105,105,105);
+    }
+    .container_select_active{
+        border-bottom: 2px solid rgb(34,93,153)
+    }
 	.content_title{
 		font-size:1.3rem;
 		padding-top: 3rem;
