@@ -1,0 +1,35 @@
+	.container_header{
+		height:5rem;
+		line-height: 5rem;
+		width:100%;
+		border-bottom: 1px solid rgb(213,213,213);
+		padding-left:1.8rem;
+		padding-right:1.8rem;
+	}
+	.content_title{
+		font-size:1.3rem;
+		padding-top: 3rem;
+		padding-left:3rem;
+		width:100%;
+		position: absolute;
+		z-index: 2
+	}
+	.content_illustrate{
+		color: rgb(200,200,200);
+	}
+	.content_illustrate_active{
+		color: rgb(34,93,153);
+	}
+	.content_botton{
+		color:rgb(109,109,109);
+		margin-left:1rem;
+		cursor:pointer;
+	}
+	.content_botton_active{
+		color:rgb(34,93,153);
+	}
+
+	.content_chart{
+		margin-top:1.7rem;
+		z-index: 1
+	}

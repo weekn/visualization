@@ -6103,6 +6103,7 @@ button.close {
 }
 .popover {
   position: absolute;
+  color:rgb(120,120,120);
   top: 0;
   left: 0;
   z-index: 1060;
@@ -6110,7 +6111,7 @@ button.close {
   max-width: 276px;
   padding: 1px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
+  font-size: 1rem;
   font-style: normal;
   font-weight: normal;
   line-height: 1.42857143;
