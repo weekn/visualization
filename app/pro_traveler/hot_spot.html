@@ -1,19 +1,39 @@
-<div style="height:5rem;line-height: 5rem;width:100%;border-bottom: 1px solid rgb(213,213,213);;padding-left:1.8rem;padding-right:1.8rem;">
+<style type="text/css">
+	.content_botton{
+		color:rgb(109,109,109);
+		margin-left:1rem;
+		cursor:pointer;
+	}
+	.content_botton_active{
+		color:rgb(34,93,153);
+	}
+
+
+</style>
+<div class="container_title">
 	<div style="width:12%;font-size:1.8rem;float:left">热门景点</div>
 	<div class='entry' style="line-height: 5rem">景点图</div>
-	<div class='entry' style="line-height: 5rem">热力图</div>
-
+	<div class='entry' style="line-height: 5rem" >热力图</div>
 
 </div>
 <div class="row">
       <div class="col-xs-6">
-      	<div style="font-size:1.3rem;padding-top: 3rem;padding-left:3rem;position: absolute;">热度地图</div>
-		<div style="height:500px;width:100%;margin-top:1.7rem" id="hot_map_chart" ></div>
+      	<div class="content_title">热度地图
+      		<span class="glyphicon glyphicon-question-sign content_illustrate_inactive"  title="基于7、8月用户数据实现">
+      		</span>
+      		<span class='content_botton'>热力图</span>
+      		<span class='content_botton'>热点图</span>
+      	</div>
+		<div class="content_chart" style="height:500px;width:100%" id="hot_map_chart" ></div>
 
       </div>
       <div class="col-xs-6">
-      	<div style="font-size:1.3rem;padding-top: 3rem;padding-left:3rem;position: absolute;">热度排名</div>
-		<div style="height:500px;width:100%;margin-top:1.7rem" id="hot_bar_chart" ></div>
+      	<div class="content_title" >
+      		热度排名
+      		<span class="glyphicon glyphicon-question-sign content_illustrate_inactive"  title="基于7、8月用户数据实现">
+      		</span>
+      	</div>
+		<div class="content_chart" style="height:500px;width:100%;" id="hot_bar_chart" ></div>
 
       </div>      
 </div>
@@ -27,6 +47,9 @@ var hot_bar_chart;
 var province_chart;
 var option;
 var data;
+contentBottonFuncArr.push(function(){
+	
+})
 var convertData = function(data) {
     var res = [];
     for (var name_ in data) {
