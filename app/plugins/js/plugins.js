@@ -57,31 +57,3 @@ $(document).ready(function() {
 })
 
 
-var contentBottonFuncArr=[];
-$(document).ready(function() {
-	
-	$(document).on('click','.content_botton',function(){
-		$(this).parent().children().removeClass('content_botton_active');
-		$(this).addClass('content_botton_active');
-		console.log(contentBottonFuncArr)
-		try{
-			for (var i=0;i<contentBottonFuncArr.length;i++){
-				contentBottonFuncArr[i]();
-			}
-		}catch(e){
-
-		}
-
-	});
-	$(document).on('mouseover','.content_botton',function(){
-		
-	})
-	$(document).on('mouseout','.content_botton',function(){
-		
-		
-	})
-
-
-
-
-})
