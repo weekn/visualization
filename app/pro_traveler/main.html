@@ -3,16 +3,24 @@
 		text-align: center;
 		padding-bottom:1px;
 	}
-	.entry{
+	.entry_container .entry{
+		
 		float:left;
 		margin-left: 2.5rem;
 		margin-right: 2.5rem;
 		height:4rem;
 		line-height:4rem;
+		cursor:pointer;
+     
 		color:rgb(105,105,105);
+
 	}
 
-	
+	.entry_container .entry:hover,.entry_container .current{
+		border-bottom: 2px solid rgb(34,93,153);
+		color:rgb(34,93,153),
+		cursor:pointer, 
+	}
 	.main_container{
 		background-color: rgb(234,234,234);
 		box-shadow: 0px  1px 4px rgb(180,180,180) inset;
@@ -29,44 +37,109 @@
 		box-shadow:0px 0px 4px rgb(180,180,180)
 	}
 
-		
+	.panel-title {
+    font-family: 'Montserrat', sans-serif;
+    color: #58666e;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 16px 20px;
+  
+ 
+    margin-bottom: 5px;
+    border-bottom: none;
+   
+    }	
+    input, select {
+    height: 34px;
+    border-radius: 3px;
+    padding-left: 10px;
+    font-size: 14px;
+    background: #fff;
+    border: 1px solid #BDC4C9;
+    box-shadow: inset 0px 1px 0px #F1F0F1;
+    }
 </style>
-<div class="container-fluid entry_container" >
+<div class="container-fluid entry_container" id="menu">
 	 <div class="container">
-	 	<div class='entry'>关键指标</div>
-		<div class='entry'>热力图</div>
-		<div class='entry'>热力图</div>
+	 	<div data-name="dash_board" class='entry current ' >关键指标</div>
+		<div data-name="hot_spot" class='entry ' >热力图</div>
+		<div data-name="data_table" class='entry ' >表格</div>
 
 	 </div>
 </div>
 
 	
 <div class="main_container" id='main_content'>
+	<div class="container detail_container" id="dash_board">
+	 	这里是你要显示这里是你要显示的这里是你要显示这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的的的内容 
+
+	 </div>
  	<div class="container detail_container" id="hot_spot" >
 	 	
 
 	 </div>
-	 <div class="container detail_container" >
-	 	这里是你要显示这里是你要显示的这里是你要显示这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的的的内容 
 
-	 </div>
 	 <div class="container detail_container" style='height:600px'>
 	 	这里是你要显示这里是你要显示的这里是你要显示这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的的的内容 
 
+
 	 </div>
+	 
 </div>
 <script>
 $(document).ready(function(){
 	
-	//$('#hot_spot').load('pro_traveler/hot_spot.html');
-	$.get('pro_traveler/hot_spot.html', function(data) {
-   		$("#hot_spot").html(data);
-  	})
-	
-	
+
+	$('#hot_spot').load('pro_traveler/hot_spot.html');
+	$('#data_table').load('pro_traveler/data_table.html');
+	$('#dash_board').load('pro_traveler/dash_board.html');
+
+
 
 })
 
+$(document).ready(function () {
+
+
+    $("#main_content").scroll(function () {
+    	
+        var items = $("#main_content").find(".detail_container");
+        var menu = $("#menu");
+        var top = $(document).scrollTop();
+        
+        var currentId = ""; //滚动条现在所在位置的item id
+        items.each(function () {
+            var m = $(this);
+            //注意：m.offset().top代表每一个item的顶部位置
+            if (top > m.offset().top - 200) {
+                currentId =  m.attr("id");
+            } else {
+                return false;
+            }
+        });
+
+
+        var currentLink = menu.find(".current");
+         
+
+        if (currentId && currentLink.attr('data-name') != currentId) {
+            currentLink.removeClass("current");
+            
+            menu.find("[data-name='"+currentId+"']").addClass("current");
+            //console.log(currentLink.attr('data-name') );
+        }
+
+      
+    });
+
+  $(".container").delegate(".entry", "click", function (){
+	   	var d ='#'+$(this).attr('data-name');
+	   	
+	    $("#main_content").animate({scrollTop:$(d).position().top+$("#main_content").scrollTop()});
+	    console.log($(d).position().top,$("#main_content").scrollTop());
+	});    
+});
 
 
 
