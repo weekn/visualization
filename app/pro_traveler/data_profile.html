@@ -55,6 +55,7 @@ var showRegionHot = function(data) {
             calculable: true,
             itemHeight: 350,
             top: 60,
+            left:40,
             inRange: {
                 color: ['rgb(209,227,245)', 'rgb(130,179,227)', 'rgb(91,155,219)', 'rgb(48,129,209)']
             }
@@ -72,7 +73,7 @@ var showRegionHot = function(data) {
                 }
             },
             zoom: 1,
-            left: 'center',
+            left: 'right',
             top: 'middle'
         },
         series: [{
@@ -98,8 +99,33 @@ var showRegionHot = function(data) {
     region_hot_chart.setOption(option);
 }
 
+var getHotSpotsData=function(arr){
+    var sorted_arr=arr.sort(function(a,b){
+        return b.symbolSize-a.symbolSize;
+    })
+    var new_data=[];
+    var new_links=[];
+    console.log(sorted_arr)
+    for(var i=0;i<sorted_arr.length;i++){
+        new_data.push({
+            'name':sorted_arr[i]['name'],
+            'symbolSize':sorted_arr[i]['symbolSize'],
+            
+        });
+        if(i!=0){
+            new_links.push({
+                'source':sorted_arr[i]['name'],
+                'target':sorted_arr[0]['name']
+            });
+        }
+        
+    }
 
-var showHotSpots = function() {
+    return {'data':new_data,'links':new_links};
+}
+var showHotSpots = function(data) {
+    var data_obj=getHotSpotsData(data);
+    console.log(data_obj)
     var option = {
         backgroundColor: '#ffffff',
         title: {
@@ -139,7 +165,6 @@ var showHotSpots = function() {
         animationDuration: 3000,
         animationEasingUpdate: 'quinticInOut',
         series: [{
-            name: 'Billboard Year End——2007-2016 Top 5',
             type: 'graph',
             layout: 'force',
             height: 100,
@@ -173,103 +198,8 @@ var showHotSpots = function() {
             },
             draggable:false,
             roam:false,
-            data: [{
-                //       "name": "Billboard Year End——2007-2016 Top 5",
-                //       // "x": 0,
-                //       // y: 0,
-                //       "symbolSize": 20,
-                //       "draggable": "true",
-                //       "value": 27
-
-                //   }, {
-                "name": "a",
-                "value": 3,
-                "symbolSize": 110,
-                "draggable": "true"
-            }, {
-                "name": "b",
-                "value": 8,
-                "symbolSize": 100,
-                "draggable": "true"
-            }, {
-                "name": "c",
-                "symbolSize": 4,
-                "draggable": "true",
-                "value": 1
-            }, {
-                "name": "d",
-                "symbolSize": 30,
-                "draggable": "true",
-                "value": 1
-            }, {
-                "name": "e",
-                "symbolSize": 20,
-                "draggable": "true",
-                "value": 1
-            }, {
-                "name": "f",
-                "symbolSize": 13,
-                "draggable": "true",
-                "value": 1
-            }, {
-                "name": "g",
-                "symbolSize": 80,
-                "draggable": "true",
-                "value": 1
-            },{
-                "name": "h",
-                "symbolSize": 2,
-                "draggable": "true",
-                "value": 1
-            }, {
-                "name": "i",
-                "symbolSize": 13,
-                "draggable": "true",
-                "value": 1
-            }, {
-                "name": "j",
-                "symbolSize": 68,
-                "draggable": "true",
-                "value": 1
-            }],
-            links:[
-                {
-                    'source':'b',
-                    'target':'a'
-                },
-                {
-                    'source':'c',
-                    'target':'a'
-                },
-                {
-                    'source':'d',
-                    'target':'a'
-                },
-                {
-                    'source':'e',
-                    'target':'a'
-                },
-                {
-                    'source':'f',
-                    'target':'a'
-                },
-                {
-                    'source':'g',
-                    'target':'a'
-                },
-                {
-                    'source':'h',
-                    'target':'a'
-                },
-                {
-                    'source':'i',
-                    'target':'a'
-                },
-                {
-                    'source':'j',
-                    'target':'a'
-                },
-            ],
+            data: data_obj.data,
+            links:data_obj.links
 
         }]
     };
@@ -301,11 +231,51 @@ $.getJSON('plugins/js/echarts3/map/json/province/sichuan.json', function(json) {
         { name: '阿坝藏族羌族自治州', value: 2310 },
         { name: '甘孜藏族自治州', value: 1210 },
         { name: '凉山彝族自治州', value: 4110 },
-
-
-
-    ]
+    ];
+   hot_spot_data=[{
+                "name": "稻城",
+                "symbolSize": 110,
+            }, {
+                "name": "九寨沟",
+                "value": 8,
+                "symbolSize": 130,
+            }, {
+                "name": "四姑娘山",
+                "symbolSize": 4,
+                "value": 1
+            }, {
+                "name": "峨眉山",
+                "symbolSize": 30,
+                "value": 1
+            }, {
+                "name": "乐山大佛",
+                "symbolSize": 20,
+                "value": 1
+            }, {
+                "name": "宽窄巷",
+                "symbolSize": 13,
+                "value": 1
+            }, {
+                "name": "杜甫草堂",
+                "symbolSize": 80,
+                "value": 1
+            },{
+                "name": "海螺沟",
+                "symbolSize": 2,
+                "value": 1
+            }, {
+                "name": "黄龙",
+                "symbolSize": 13,
+                "value": 1
+            }, {
+                "name": "牛背山",
+                "symbolSize": 68,
+                "value": 1
+            }]
     showRegionHot(data);
-    showHotSpots();
+   // getHotSpotsData(hot_spot_data);
+    showHotSpots(hot_spot_data);
 })
 </script>
+
+
