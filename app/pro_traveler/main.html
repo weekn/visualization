@@ -1,7 +1,6 @@
 
 <div class="container-fluid entry_container" id="menu">
 	 <div class="container">
-	 	<div data-name="dash_board" class='entry current ' >关键指标</div>
 		<div data-name="hot_spot" class='entry ' >热力图</div>
 		<div data-name="data_table" class='entry ' >表格</div>
 
@@ -9,41 +8,36 @@
 </div>
 
 	
-<div class="main_container" id='main_content'>
-	<div class="container detail_container" id="dash_board">
-	 	这里是你要显示这里是你要显示的这里是你要显示这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的的的内容 
+<div class="main_container" id='main_content'></div>
+<div style="display: none" id='detail_container_demo'>
 
-	 </div>
- 	<div class="container detail_container" id="hot_spot" >
-	 	
-
-	 </div>
-
-
-	 <div class="container detail_container" style='height:600px' id="data_table">
-	 	这里是你要显示这里是你要显示的这里是你要显示这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的这里是你要显示的的的内容 
-
-
-	 </div>
-	 
+	<div class="container detail_container" ></div>
 </div>
 <script>
 $(document).ready(function(){
 	
 
-	$('#hot_spot').load('pro_traveler/hot_spot.html');
-	$('#data_table').load('pro_traveler/data_table.html');
-	$('#dash_board').load('pro_traveler/dash_board.html');
+	// $('#hot_spot').load('pro_traveler/hot_spot.html');
+	// $('#data_table').load('pro_traveler/data_table.html');
+	// $('#dash_board').load('pro_traveler/dash_board.html');
 
-
+	$('#menu .entry').each(function(i){
+		var dataname=$(this).attr('data-name');
+		$('#detail_container_demo').children().attr('id',dataname);
+		var demo=$('#detail_container_demo').html();
+		$('#main_content').append(demo);
+		$('#detail_container_demo').children().attr('id','xxxxyyyy');
+		$('#'+dataname).load('pro_traveler/'+dataname+'.html')
+	})
 
 })
 
 $(document).ready(function () {
 
-
-    $("#main_content").scroll(function () {
-    	
+	
+   $("#main_content").scroll(function () {
+  
+    	console.log('ssssssssss')
         var items = $("#main_content").find(".detail_container");
         var menu = $("#menu");
         var top = $(document).scrollTop();
@@ -73,7 +67,7 @@ $(document).ready(function () {
       
     });
 
-  $(".container").delegate(".entry", "click", function (){
+  	$(".container").delegate(".entry", "click", function (){
 	   	var d ='#'+$(this).attr('data-name');
 	   	
 	    $("#main_content").animate({scrollTop:$(d).position().top+$("#main_content").scrollTop()});
