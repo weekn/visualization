@@ -1,0 +1,281 @@
+<div class="container_header">
+    <div class="container_title">数据概况</div>
+</div>
+<div class="row" style="padding:3rem;padding-bottom: 0px;">
+    <table style='width:100%;text-align: center;vertical-align: middle;border: 1px solid rgb(203,203,203);'>
+        <tbody>
+            <tr style="height:5rem;font-size:2.7rem;font-family:FangSong;">
+                <td>旅游人员总数</td>
+                <td>省内游客总数</td>
+                <td>省外游客总数</td>
+                <td>本周热门景点数</td>
+            </tr>
+            <tr style="font-size:2.2rem;height:3.8rem">
+                <td>10000</td>
+                <td>8000</td>
+                <td>2000</td>
+                <td>20</td>
+            </tr>
+            <tr style="height:3rem">
+                <td><span class='glyphicon glyphicon-arrow-up' style='color:red'></span>3% 相比上个月</td>
+                <td><span class='glyphicon glyphicon-arrow-down' style='color:green'></span>12% 相比上个月</td>
+                <td><span class='glyphicon glyphicon-arrow-up' style='color:red'></span>22% 相比上个月</td>
+                <td><span class='glyphicon glyphicon-arrow-up' style='color:red'></span>10% 相比上个月</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <div class="col-xs-6">
+        <div class="content_title">地区热度
+            <span class="glyphicon glyphicon-question-sign content_illustrate" title="根据7月用户数据实现">
+            </span>
+        </div>
+        <div class="content_chart" style="height:500px;width:100%" id="region_hot"></div>
+    </div>
+    <div class="col-xs-6">
+        <div class="content_title">
+            热门景点
+            <span class="glyphicon glyphicon-question-sign content_illustrate" title="根据7月用户数据实现">
+            </span>
+        </div>
+        <div class="content_chart" style="height:500px;width:100%;" id='hot_spots'></div>
+    </div>
+</div>
+<script type="text/javascript">
+var showRegionHot = function(data) {
+    var option = {
+        backgroundColor: '#ffffff',
+        visualMap: {
+            min: 0,
+            max: 5000,
+            left: 'left',
+            top: 'bottom',
+            text: ['高', '低'], // 文本，默认为数值文本
+            calculable: true,
+            itemHeight: 350,
+            top: 60,
+            left:40,
+            inRange: {
+                color: ['rgb(209,227,245)', 'rgb(130,179,227)', 'rgb(91,155,219)', 'rgb(48,129,209)']
+            }
+        },
+        geo: {
+            map: 'sichuan',
+            selectedMode: false,
+            itemStyle: {
+                normal: {
+                    areaColor: '#FFFFFF',
+                    borderColor: '#404a59'
+                },
+                emphasis: {
+                    areaColor: 'rgb(34,93,153)'
+                }
+            },
+            zoom: 1,
+            left: 'right',
+            top: 'middle'
+        },
+        series: [{
+            type: 'map',
+            geoIndex: 0,
+            mapType: 'sichuan',
+            label: {
+                normal: {
+                    show: false
+                },
+                emphasis: {
+                    textStyle: {
+                        color: '#fff'
+                    }
+                }
+            },
+            animation: false,
+            data: data
+
+        }]
+    }
+    region_hot_chart = echarts.init(document.getElementById('region_hot'));
+    region_hot_chart.setOption(option);
+}
+
+var getHotSpotsData=function(arr){
+    var sorted_arr=arr.sort(function(a,b){
+        return b.symbolSize-a.symbolSize;
+    })
+    var new_data=[];
+    var new_links=[];
+    console.log(sorted_arr)
+    for(var i=0;i<sorted_arr.length;i++){
+        new_data.push({
+            'name':sorted_arr[i]['name'],
+            'symbolSize':sorted_arr[i]['symbolSize'],
+            
+        });
+        if(i!=0){
+            new_links.push({
+                'source':sorted_arr[i]['name'],
+                'target':sorted_arr[0]['name']
+            });
+        }
+        
+    }
+
+    return {'data':new_data,'links':new_links};
+}
+var showHotSpots = function(data) {
+    var data_obj=getHotSpotsData(data);
+    console.log(data_obj)
+    var option = {
+        backgroundColor: '#ffffff',
+        title: {
+            text: "",
+            subtext: "",
+            top: "top",
+            left: "center"
+        },
+        tooltip: {},
+        legend: [{
+
+            formatter: function(name) {
+                return echarts.format.truncateText(name, 40, '14px Microsoft Yahei', '…');
+            },
+            tooltip: {
+                show: false
+            },
+            selectedMode: 'false',
+            bottom: 20,
+            
+        }],
+        toolbox: {
+            show: false,
+            feature: {
+                dataView: {
+                    show: true,
+                    readOnly: true
+                },
+                restore: {
+                    show: true
+                },
+                saveAsImage: {
+                    show: true
+                }
+            }
+        },
+        animationDuration: 3000,
+        animationEasingUpdate: 'quinticInOut',
+        series: [{
+            type: 'graph',
+            layout: 'force',
+            height: 100,
+
+            force: {
+                repulsion: 300,
+                gravity:0.05,
+                edgeLength:150,
+                layoutAnimation:false
+            },
+            focusNodeAdjacency: true,
+            itemStyle:{
+                normal:{
+                    color:'rgb(113,168,223)'
+                }
+            },
+            label: {
+                normal: {
+
+                    show: true,
+                    position: 'inside',
+
+                }
+            },
+            lineStyle: {
+                normal: {
+                    color: '#ffffff',
+                    curveness: 0,
+                    type: "solid"
+                }
+            },
+            draggable:false,
+            roam:false,
+            data: data_obj.data,
+            links:data_obj.links
+
+        }]
+    };
+    hot_spots_chart = echarts.init(document.getElementById('hot_spots'));
+    hot_spots_chart.setOption(option);
+}
+$.getJSON('plugins/js/echarts3/map/json/province/sichuan.json', function(json) {
+    echarts.registerMap('sichuan', json);
+    data = [
+        { name: '绵阳市', value: 100 },
+        { name: '成都市', value: 210 },
+        { name: '自贡市', value: 410 },
+        { name: '攀枝花市', value: 310 },
+        { name: '泸州市', value: 310 },
+        { name: '德阳市', value: 110 },
+        { name: '绵阳市', value: 110 },
+        { name: '广元市', value: 210 },
+        { name: '遂宁市', value: 410 },
+        { name: '内江市', value: 210 },
+        { name: '乐山市', value: 610 },
+        { name: '宜宾市', value: 610 },
+        { name: '南充市', value: 710 },
+        { name: '眉山市', value: 910 },
+        { name: '广安市', value: 1210 },
+        { name: '达州市', value: 310 },
+        { name: '雅安市', value: 3110 },
+        { name: '巴中市', value: 2110 },
+        { name: '资阳市', value: 310 },
+        { name: '阿坝藏族羌族自治州', value: 2310 },
+        { name: '甘孜藏族自治州', value: 1210 },
+        { name: '凉山彝族自治州', value: 4110 },
+    ];
+   hot_spot_data=[{
+                "name": "稻城",
+                "symbolSize": 110,
+            }, {
+                "name": "九寨沟",
+                "value": 8,
+                "symbolSize": 130,
+            }, {
+                "name": "四姑娘山",
+                "symbolSize": 4,
+                "value": 1
+            }, {
+                "name": "峨眉山",
+                "symbolSize": 30,
+                "value": 1
+            }, {
+                "name": "乐山大佛",
+                "symbolSize": 20,
+                "value": 1
+            }, {
+                "name": "宽窄巷",
+                "symbolSize": 13,
+                "value": 1
+            }, {
+                "name": "杜甫草堂",
+                "symbolSize": 80,
+                "value": 1
+            },{
+                "name": "海螺沟",
+                "symbolSize": 2,
+                "value": 1
+            }, {
+                "name": "黄龙",
+                "symbolSize": 13,
+                "value": 1
+            }, {
+                "name": "牛背山",
+                "symbolSize": 68,
+                "value": 1
+            }]
+    showRegionHot(data);
+   // getHotSpotsData(hot_spot_data);
+    showHotSpots(hot_spot_data);
+})
+</script>
+
+
