@@ -1,10 +1,9 @@
 
 <div class="container-fluid entry_container" id="menu">
 	 <div class="container">
-	 	<div data-name="data_profile" class='entry ' >数据概况</div>
+	 
 		<div data-name="hot_spot" class='entry ' >热力图</div>
-		<div data-name="data_table" class='entry ' >表格</div>
-		<div data-name="cust_profile" class='entry ' >用户概况</div>
+		
 
 	 </div>
 </div>
@@ -18,21 +17,21 @@
 <script>
 	
 $(document).ready(function(){
-  var now_pro=$('.pro_entry_active').attr('pro');
+	var now_pro=$('.pro_entry_active').attr('pro');
 
-  // $('#hot_spot').load('pro_traveler/hot_spot.html');
-  // $('#data_table').load('pro_traveler/data_table.html');
-  // $('#dash_board').load('pro_traveler/dash_board.html');
+	// $('#hot_spot').load('pro_traveler/hot_spot.html');
+	// $('#data_table').load('pro_traveler/data_table.html');
+	// $('#dash_board').load('pro_traveler/dash_board.html');
 
-  $('#menu .entry').each(function(i){
-    var dataname=$(this).attr('data-name');
-    $('#detail_container_demo').children().attr('id',dataname);
-    var demo=$('#detail_container_demo').html();
-    $('#main_content').append(demo);
-    $('#detail_container_demo').children().attr('id','xxxxyyyy');
-    $('#'+dataname).load(now_pro+'/'+dataname+'.html')
-    console.log(dataname);
-  })
+	$('#menu .entry').each(function(i){
+		var dataname=$(this).attr('data-name');
+		$('#detail_container_demo').children().attr('id',dataname);
+		var demo=$('#detail_container_demo').html();
+		$('#main_content').append(demo);
+		$('#detail_container_demo').children().attr('id','xxxxyyyy');
+		$('#'+dataname).load(now_pro+'/'+dataname+'.html')
+		console.log(dataname);
+	})
 
 })
 
