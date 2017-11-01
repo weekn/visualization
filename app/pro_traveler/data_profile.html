@@ -1,7 +1,7 @@
 <div class="container_header">
     <div class="container_title">数据概况</div>
 </div>
-<div class="row" style="padding:3rem;padding-bottom: 0px;">
+<!-- <div class="row" style="padding:3rem;padding-bottom: 0px;">
     <table style='width:100%;text-align: center;vertical-align: middle;border: 1px solid rgb(203,203,203);'>
         <tbody>
             <tr style="height:5rem;font-size:2.7rem;font-family:FangSong;">
@@ -24,7 +24,7 @@
             </tr>
         </tbody>
     </table>
-</div>
+</div> -->
 <div class="row">
     <div class="col-xs-6">
         <div class="content_title">地区热度
@@ -57,7 +57,7 @@ var showRegionHot = function(data) {
             top: 60,
             left:40,
             inRange: {
-                color: ['rgb(209,227,245)', 'rgb(130,179,227)', 'rgb(91,155,219)', 'rgb(48,129,209)']
+                color: ['rgb(219,220,224)','rgb(108,197,250)','rgb(62,159,248)']
             }
         },
         geo: {
@@ -66,10 +66,10 @@ var showRegionHot = function(data) {
             itemStyle: {
                 normal: {
                     areaColor: '#FFFFFF',
-                    borderColor: '#404a59'
+                    borderColor: 'rgb(255,255,255)'
                 },
                 emphasis: {
-                    areaColor: 'rgb(34,93,153)'
+                    areaColor: 'rgb(33,137,247)'
                 }
             },
             zoom: 1,
@@ -178,7 +178,7 @@ var showHotSpots = function(data) {
             focusNodeAdjacency: true,
             itemStyle:{
                 normal:{
-                    color:'rgb(113,168,223)'
+                    color:'rgb(62,159,248)'
                 }
             },
             label: {
