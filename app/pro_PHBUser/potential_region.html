@@ -1,0 +1,97 @@
+<div class="container_header">
+    <div class="container_title">潜力区域</div>
+</div>
+<div class="row">
+    <div class="col-xs-6">
+        <div class="content_title">区域地图
+            <span class="glyphicon glyphicon-question-sign content_illustrate" title="根据7月西藏数据实现">
+            </span>
+        </div>
+        <div class="content_chart" style="height:500px;width:100%" id="region_hot"></div>
+    </div>
+    <div class="col-xs-6">
+        <div class="content_title">
+            区域详情
+            <span class="glyphicon glyphicon-question-sign content_illustrate" title="根据7月西藏数据实现">
+            </span>
+        </div>
+        <div class="content_chart" style="height:500px;width:100%;" id='PHBuser_profile_chart'></div>
+    </div>
+</div>
+<script type="text/javascript">
+var showRegion = function(data) {
+
+    var option = {
+        backgroundColor: '#ffffff',
+        visualMap: {
+            min: 0,
+            max: 4000,
+            left: 'left',
+            top: 'bottom',
+            text: ['高', '低'], // 文本，默认为数值文本
+            calculable: true,
+            itemHeight: 350,
+            top: 60,
+            left: 40,
+            inRange: {
+                color: ['rgb(219,220,224)', 'rgb(108,197,250)', 'rgb(62,159,248)']
+            }
+        },
+        geo: {
+            map: 'xizang',
+            selectedMode: false,
+            itemStyle: {
+                normal: {
+                    areaColor: '#FFFFFF',
+                    borderColor: 'rgb(255,255,255)'
+                },
+                emphasis: {
+                    areaColor: 'rgb(33,137,247)'
+                }
+            },
+            zoom: 1,
+            left: 'right',
+            top: 'middle',
+            regions: getRegionHotRegions(data)
+
+        },
+        series: [{
+            type: 'map',
+            geoIndex: 0,
+            mapType: 'xizang',
+            label: {
+                normal: {
+                    show: false
+                }
+            },
+            animation: false,
+            data: data
+
+        }]
+    }
+    region_hot_chart = echarts.init(document.getElementById('region_hot'));
+    region_hot_chart.setOption(option);
+}
+
+$.getJSON('plugins/js/echarts3/map/json/province/xizang.json', function(json) {
+    echarts.registerMap('xizang', json);
+    data = [
+        { name: '拉萨市', value: 3500 },
+        { name: '日喀则地区', value: 210 },
+        { name: '昌都地区', value: 1410 },
+        { name: '山南地区', value: 1910 },
+        { name: '那曲地区', value: 310 },
+        { name: '阿里地区', value: 110 },
+        { name: '林芝地区', value: 1100 },
+    ];
+    showRegionHot(data);
+    // getHotSpotsData(hot_spot_data);
+    showUserProfile();
+})
+
+
+
+
+
+
+</script>

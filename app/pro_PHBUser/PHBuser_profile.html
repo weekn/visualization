@@ -1,0 +1,156 @@
+<div class="container_header">
+    <div class="container_title">家宽用户概况</div>
+</div>
+<div class="row">
+    <div class="col-xs-6">
+        <div class="content_title">地区用户数
+            <span class="glyphicon glyphicon-question-sign content_illustrate" title="根据7月西藏数据实现">
+            </span>
+        </div>
+        <div class="content_chart" style="height:500px;width:100%" id="region_hot"></div>
+    </div>
+    <div class="col-xs-6">
+        <div class="content_title">
+            用户概况
+            <span class="glyphicon glyphicon-question-sign content_illustrate" title="根据7月西藏数据实现">
+            </span>
+        </div>
+        <div class="content_chart" style="height:500px;width:100%;" id='PHBuser_profile_chart'></div>
+    </div>
+</div>
+<script type="text/javascript">
+var getRegionHotRegions = function(data) {
+    var regions = []
+    for (var i = 0; i < data.length; i++) {
+        var region = {
+            'name': data[i]['name'],
+            'label': {
+                'normal': {
+                    'formatter': data[i]['name'] + '用户数\n' + data[i]['value'],
+                    'fontSize': 13,
+                    'color': 'rgb(255,255,255)',
+                    'backgroundColor': 'rgb(255,255,255)',
+                    'borderWidth': 1,
+                    'borderColor': 'rgb(33,137,247)',
+                    'borderRadius': 4,
+                    'padding': 4
+                }
+            }
+
+        };
+        regions.push(region);
+
+    }
+    return regions;
+}
+var showRegionHot = function(data) {
+
+    var option = {
+        backgroundColor: '#ffffff',
+        visualMap: {
+            min: 0,
+            max: 4000,
+            left: 'left',
+            top: 'bottom',
+            text: ['高', '低'], // 文本，默认为数值文本
+            calculable: true,
+            itemHeight: 350,
+            top: 60,
+            left: 40,
+            inRange: {
+                color: ['rgb(219,220,224)', 'rgb(108,197,250)', 'rgb(62,159,248)']
+            }
+        },
+        geo: {
+            map: 'xizang',
+            selectedMode: false,
+            itemStyle: {
+                normal: {
+                    areaColor: '#FFFFFF',
+                    borderColor: 'rgb(255,255,255)'
+                },
+                emphasis: {
+                    areaColor: 'rgb(33,137,247)'
+                }
+            },
+            zoom: 1,
+            left: 'right',
+            top: 'middle',
+            regions: getRegionHotRegions(data)
+
+        },
+        series: [{
+            type: 'map',
+            geoIndex: 0,
+            mapType: 'xizang',
+            label: {
+                normal: {
+                    show: false
+                }
+            },
+            animation: false,
+            data: data
+
+        }]
+    }
+    region_hot_chart = echarts.init(document.getElementById('region_hot'));
+    region_hot_chart.setOption(option);
+}
+
+var showUserProfile = function() {
+    
+    var option = {
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        series: [{
+            name: '类型',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '50%'],
+            data: [
+                { value: 335, name: '已开通家宽用户数' },
+                { value: 310, name: '未开通家宽潜在用户数' },
+                { value: 234, name: '开通对手家宽潜在用户数' },
+                
+            ],
+            itemStyle: {
+                normal:{
+                    color:function(params){
+                        if(params['data']['name']=='已开通家宽用户数'){
+                            return 'rgb(219,220,224)'
+                        }else if(params['data']['name']=='未开通家宽潜在用户数'){
+                            return 'rgb(33,137,247)'
+                        }else if(params['data']['name']=='开通对手家宽潜在用户数'){
+                            return 'rgb(108,197,250)'
+                        }
+                    }
+                },
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }]
+    };
+    hot_spots_chart = echarts.init(document.getElementById('PHBuser_profile_chart'));
+    hot_spots_chart.setOption(option);
+}
+$.getJSON('plugins/js/echarts3/map/json/province/xizang.json', function(json) {
+    echarts.registerMap('xizang', json);
+    data = [
+        { name: '拉萨市', value: 3500 },
+        { name: '日喀则地区', value: 210 },
+        { name: '昌都地区', value: 1410 },
+        { name: '山南地区', value: 1910 },
+        { name: '那曲地区', value: 310 },
+        { name: '阿里地区', value: 110 },
+        { name: '林芝地区', value: 1100 },
+    ];
+    showRegionHot(data);
+    // getHotSpotsData(hot_spot_data);
+    showUserProfile();
+})
+</script>
