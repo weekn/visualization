@@ -6,8 +6,9 @@
         <div class="content_title">区域地图
             <span class="glyphicon glyphicon-question-sign content_illustrate" title="根据7月西藏数据实现">
             </span>
+            <span class='content_botton' id='PR_back' style='display: none'>后退</span>
         </div>
-        <div class="content_chart" style="height:500px;width:100%" id="region_hot"></div>
+        <div class="content_chart" style="height:500px;width:100%" id="potential_region_chart"></div>
     </div>
     <div class="col-xs-6">
         <div class="content_title">
@@ -15,64 +16,229 @@
             <span class="glyphicon glyphicon-question-sign content_illustrate" title="根据7月西藏数据实现">
             </span>
         </div>
-        <div class="content_chart" style="height:500px;width:100%;" id='PHBuser_profile_chart'></div>
+        <div class="content_chart" style="height:500px;width:100%;" id='potential_region_detail_chart'></div>
     </div>
 </div>
 <script type="text/javascript">
+var potential_region_chart = echarts.init(document.getElementById('potential_region_chart'));
+var potential_region_detail_chart = echarts.init(document.getElementById('potential_region_detail_chart'));
+
 var showRegion = function(data) {
 
     var option = {
         backgroundColor: '#ffffff',
-        visualMap: {
-            min: 0,
-            max: 4000,
-            left: 'left',
-            top: 'bottom',
-            text: ['高', '低'], // 文本，默认为数值文本
-            calculable: true,
-            itemHeight: 350,
-            top: 60,
-            left: 40,
-            inRange: {
-                color: ['rgb(219,220,224)', 'rgb(108,197,250)', 'rgb(62,159,248)']
-            }
-        },
+
         geo: {
             map: 'xizang',
             selectedMode: false,
             itemStyle: {
                 normal: {
-                    areaColor: '#FFFFFF',
+                    areaColor: 'rgb(219,220,224)',
                     borderColor: 'rgb(255,255,255)'
                 },
                 emphasis: {
                     areaColor: 'rgb(33,137,247)'
                 }
             },
-            zoom: 1,
-            left: 'right',
+            zoom: 1.1,
             top: 'middle',
-            regions: getRegionHotRegions(data)
 
         },
         series: [{
-            type: 'map',
-            geoIndex: 0,
-            mapType: 'xizang',
-            label: {
-                normal: {
-                    show: false
-                }
-            },
-            animation: false,
-            data: data
+                name: 'a',
+                type: 'scatter',
+                coordinateSystem: 'geo',
+                data: [{
+                        'name': '拉萨',
+                        'value': [
+                            '91.11', '29.97'
+                        ]
 
-        }]
+                    }
+
+                ],
+                symbolSize: 13,
+                label: {
+                    normal: {
+                        formatter: '{b}',
+                        position: 'right',
+                        show: true
+                    },
+                    emphasis: {
+                        show: true
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: 'rgb(33,137,247)'
+                    }
+                }
+            }
+
+        ]
     }
-    region_hot_chart = echarts.init(document.getElementById('region_hot'));
-    region_hot_chart.setOption(option);
+
+    potential_region_chart.dispose();
+    potential_region_chart = echarts.init(document.getElementById('potential_region_chart'));
+    potential_region_chart.on('click', function(params) {
+        
+        if (params['componentType'] == 'series') {
+            showNestLevel();
+            
+        }
+    });
+    potential_region_chart.setOption(option);
+}
+var showCityMap = function(chart) {
+    
+    var option = {
+        geo: {
+            show: false
+        },
+        visualMap: {
+            show: false,
+            top: 'top',
+            min: 0,
+            max: 5,
+            seriesIndex: 0,
+            calculable: true,
+            inRange: {
+                color: ['rgb(219,220,224)', 'rgb(108,197,250)', 'rgb(62,159,248)']
+            }
+        },
+        bmap: {
+            center: [91.11, 29.661],
+            zoom: 12,
+            roam: true,
+            mapStyle: bmapStyle
+        },
+        series: [
+            {
+                name: '景点热度',
+                type: 'heatmap',
+                coordinateSystem: 'bmap',
+                data: data_hot,
+                pointSize: 5,
+                blurSize: 6
+            }
+
+        ],
+    };
+    potential_region_chart.dispose();
+    potential_region_chart = echarts.init(document.getElementById('potential_region_chart'));
+    potential_region_chart.setOption(option);
+    //chart.setOption(option);
+
+}
+function ShowController(){
+    this.level=0;
+    this.target='xizang';
+    this.lastTarget='';
+    this.show2=function(){
+        this.show();
+    }
+    this.show=function(){
+        alert(111)
+    }
+    
 }
 
+var getdetailBarData=function(data){
+    res=data.sort(function(a,b){
+        return a.total-b.total;
+    })
+    var y=[];
+    var opponent=[];
+    var havent=[]
+    for(var i=0;i<res.length;i++){
+        y.push(res[i]['name']);
+        opponent.push(res[i]['opponent']);
+        havent.push(res[i]['havent']);
+    }
+    return {y:y,opponent:opponent,havent:havent};
+}
+
+var showRegionDetail=function(data){
+    var data_obj=getdetailBarData(data);
+    option = {
+        tooltip : {
+            trigger: 'axis',
+            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            }
+        },
+        legend: {
+            data: ['已开通对手用户', '未开通用户']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis:  {
+            type: 'value'
+        },
+        yAxis: {
+            type: 'category',
+            data: data_obj.y
+        },
+        series: [
+            {
+                name: '已开通对手用户',
+                type: 'bar',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: false,
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: 'rgb(62,159,248)',
+                    }
+                    
+                },
+                data: data_obj.opponent
+            },
+            {
+                name: '未开通用户',
+                type: 'bar',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: false,
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: 'rgb(219,220,224)',
+                    }
+                    
+                },
+                data: data_obj.havent
+            }
+        ]
+    };
+   // potential_region_detail_chart.dispose();
+   // potential_region_detail_chart = echarts.init(document.getElementById('potential_region_detail_chart'));
+    potential_region_detail_chart.setOption(option);
+
+}
+var showNestLevel=function(){
+    showCityMap();
+    showRegionDetail(data_lasa_detail);
+    $('#PR_back').show();
+};
+var showLastLevel=function(){
+    showRegion(data);
+    showRegionDetail(data_province_detail);
+    $('#PR_back').hide();
+}
+$('#PR_back').click(function(){
+    showLastLevel();
+
+});
 $.getJSON('plugins/js/echarts3/map/json/province/xizang.json', function(json) {
     echarts.registerMap('xizang', json);
     data = [
@@ -84,14 +250,85 @@ $.getJSON('plugins/js/echarts3/map/json/province/xizang.json', function(json) {
         { name: '阿里地区', value: 110 },
         { name: '林芝地区', value: 1100 },
     ];
-    showRegionHot(data);
+    showRegion(data);
+    showRegionDetail(data_province_detail);
     // getHotSpotsData(hot_spot_data);
-    showUserProfile();
+
 })
 
+var data_province_detail=[
+    { name: '拉萨市', total: 3500 ,havent:1000,opponent:2500},
+    { name: '日喀则地区', total: 210,havent:10,opponent:200 },
+    { name: '昌都地区', total: 1410 ,havent:1000,opponent:410},
+    { name: '山南地区', total: 1910 ,havent:1000,opponent:910},
+    { name: '那曲地区', total: 310 ,havent:50,opponent:260},
+    { name: '阿里地区', total: 110 ,havent:90,opponent:20},
+    { name: '林芝地区', total: 1100 ,havent:100,opponent:1000},
+
+
+]
+
+var data_lasa_detail=[
+    { name: '小区1', total: 500 ,havent:200,opponent:300},
+    { name: '小区2', total: 210,havent:10,opponent:200 },
+    { name: '小区3', total: 1410 ,havent:1000,opponent:410},
+    { name: '小区4', total: 1910 ,havent:1000,opponent:910},
+    { name: '小区5', total: 310 ,havent:50,opponent:260},
+    { name: '小区6', total: 110 ,havent:90,opponent:20},
+    { name: '小区7', total: 1100 ,havent:100,opponent:1000},
+
+
+]
 
 
 
+var data_hot=[
+    [91.11, 29.661],
+    [91.11, 29.661],
+    [91.11, 29.661],
+    [92.11, 28.661],
+    [91.21, 29.561],
+    [91.61, 29.631],
+    [91.31, 29.461],
+    [91.61, 29.161],
+    [91.21, 29.261],
+    [91.31, 29.361],
+    [91.13, 29.631],
+    [91.16, 29.611],
 
 
+]
+
+var bmapStyle = {
+    styleJson: [
+          {
+                    "featureType": "land",
+                    "elementType": "geometry",
+                    "stylers": {
+                              "color": "#ffffff"
+                    }
+          },
+          {
+                    "featureType": "road",
+                    "elementType": "all",
+                    "stylers": {
+                              "color": "#cccccc"
+                    }
+          },
+          {
+                    "featureType": "green",
+                    "elementType": "all",
+                    "stylers": {
+                              "visibility": "off"
+                    }
+          },
+          {
+                    "featureType": "highway",
+                    "elementType": "geometry.fill",
+                    "stylers": {
+                              "color": "#cccccc"
+                    }
+          }
+]
+}
 </script>

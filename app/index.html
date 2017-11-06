@@ -33,12 +33,17 @@
 <!-- <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 
 <script src="plugins/js/content.js"></script>
+<script src="plugins/js/echarts3/echarts.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=FCc890ca0f7b94677b6b0ffb212f78d9"></script>
+<script type="text/javascript" src="plugins/js/echarts3/extension/bmap.js"></script>
+
+
 
 <div class="container-fluid" style="background-color:rgb(62,159,248);" id="top">
   <div class="container" style="height:6rem;text-align: center;line-height: 6rem;color:rgb(255,255,255)">
      <div style="font-size:3rem;float:left;width:25rem;">可视化demo</div>
-     <div class="pro_entry pro_entry_active" pro='pro_traveler'>旅游人员识别</div>
-     <div class="pro_entry" pro='pro_PHBUser'>家宽用户识别</div>
+     <div class="pro_entry " pro='pro_traveler'>旅游人员识别</div>
+     <div class="pro_entry pro_entry_active" pro='pro_PHBUser'>家宽用户识别</div>
      <div style="font-size:1.3rem;float:right;width:15rem;text-align:right;">您好，火炉山岛主 退出</div>
   </div>
 </div>  
@@ -48,7 +53,7 @@
 
 </body>
 </html>
-<script src="plugins/js/echarts3/echarts.js"></script>
+
 <script>
 function loadContent(href) {
   $.get(href, function(data) {
