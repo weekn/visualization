@@ -6,9 +6,9 @@
     <div class="container_select">热力图</div>
 </div>
 <div class="row">
-    <div class="col-xs-12" style="padding-top:15px;">
+    <div class="col-xs-12" style="padding-top:15px;padding-bottom:15px;">
      <table id="example0" class="table display" >
-        <thead>
+        <thead style="border-bottom:rgb(62,159,248)">
             <tr>
                 <th>姓名</th>
                 <th>手机号</th>
@@ -63,7 +63,7 @@ $(document).ready(function() {
         processing: true,
         serverSide: true,
         ordering: false,
-        ajax:"http://localhost:8081/customers",
+        ajax:"http://localhost:8080/visualization_bs/customers",
         columns: [   
                 {"data" : "name"},  
                 {"data" : "phone"},  
