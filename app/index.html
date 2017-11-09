@@ -47,14 +47,30 @@
 <div class="container-fluid" style="background-color:rgb(62,159,248);" id="top">
   <div class="container" style="height:6rem;text-align: center;line-height: 6rem;color:rgb(255,255,255)">
      <div style="font-size:3rem;float:left;width:25rem;">可视化demo</div>
-     <div class="pro_entry " pro='pro_traveler'>旅游人员识别</div>
-     <div class="pro_entry pro_entry_active" pro='pro_PHBUser'>家宽用户识别</div>
+     <div class="pro_entry pro_entry_active" pro='pro_traveler'>旅游人员识别</div>
+     <div class="pro_entry " pro='pro_PHBUser'>家宽用户识别</div>
      <div style="font-size:1.3rem;float:right;width:15rem;text-align:right;">您好，火炉山岛主 退出</div>
   </div>
 </div>
 <div style="display: none" id='config' 
 	bs_path="http://192.168.181.234:8081"></div>  
-<div id="project" ></div>
+<div id="project">
+	<div class="container-fluid entry_container" id="menu">
+<!-- 	  	<div class="container">
+			  <div data-name="data_profile" class='entry ' >数据概况</div>
+			  <div data-name="popular_spots" class='entry ' >热门景点</div>
+			  <div data-name="cust_profile" class='entry ' >用户概况</div>
+			  <div data-name="data_table" class='entry ' >表格</div>
+		</div> -->
+	</div>
+	<div class="main_container" id='main_content'></div>
+	<div style="display: none" id='detail_container_demo'>
+
+		<div class="container detail_container" ></div>
+	</div>
+
+
+</div>
 <div id='footer' style="display: none">
 	<div style='height:60px;width:100%;background-color: rgb(62,159,248)'></div>
 </div>
@@ -62,16 +78,34 @@
 
 </body>
 </html>
-
 <script>
-function loadContent(href) {
+var loadProject=function(href) {
   $.get(href, function(data) {
-    $("#project").html(data);
+    $("#menu").html(data);
+    loadProjectEntry();
   })
 };
+var loadProjectEntry=function(){
+
+	var now_pro=$('.pro_entry_active').attr('pro');
+	var len=$('#menu .entry').length;
+	$('#main_content').html("");
+	$('#menu .entry').each(function(i){
+		var dataname=$(this).attr('data-name');
+		$('#detail_container_demo').children().attr('id',dataname);
+		var demo=$('#detail_container_demo').html();
+		$('#main_content').append(demo);
+		$('#detail_container_demo').children().attr('id','xxxxyyyy');
+		$('#'+dataname).load(now_pro+'/'+dataname+'.html');
+		if(i==len-1){
+		  var footer=$('#footer').html();
+		  $('#main_content').append(footer);
+		}
+	})
+}
 $(document).ready(function(){
 	var now_pro=$('.pro_entry_active').attr('pro');
-	loadContent(now_pro+"/main.html");
+	loadProject(now_pro+"/main.html");
 });
 
 $(document).ready(function(){	
@@ -82,8 +116,73 @@ $(document).ready(function(){
 		$('.pro_entry').removeClass('pro_entry_active');
 		$(this).addClass('pro_entry_active');
 		var pro=$(this).attr('pro');
-		loadContent(pro+"/main.html");
+		loadProject(pro+"/main.html");
 	})
 
 });
+
+//--------------------------------
+
+
+
+$(document).ready(function () {
+
+	
+   $("#main_content").scroll(function () {
+  
+    	
+        var items = $("#main_content").find(".detail_container");
+        var menu = $("#menu");
+        var top = $(document).scrollTop();
+        
+        var currentId = ""; //滚动条现在所在位置的item id
+        items.each(function () {
+            var m = $(this);
+            //注意：m.offset().top代表每一个item的顶部位置
+            if (top > m.offset().top - 200) {
+                currentId =  m.attr("id");
+            } else {
+                return false;
+            }
+        });
+
+
+        var currentLink = menu.find(".current");
+         
+
+        if (currentId && currentLink.attr('data-name') != currentId) {
+            currentLink.removeClass("current");
+            
+            menu.find("[data-name='"+currentId+"']").addClass("current");
+            //console.log(currentLink.attr('data-name') );
+        }
+
+      
+    });
+
+  	$(document).on("click","#menu .entry", function (){
+	   	var d ='#'+$(this).attr('data-name');
+	   	
+	    $("#main_content").animate({scrollTop:$(d).position().top+$("#main_content").scrollTop()});
+	    console.log($(d).position().top,$("#main_content").scrollTop());
+	});    
+});
+
+
+$(document).ready(function() {
+  var win_height = window.innerHeight;
+  var top_height = $("#top").height();
+  var hv = (win_height-top_height) -40+ 'px';
+  $('#main_content').css('height', hv)
+
+  $(window).resize(function() {
+    var win_height = window.innerHeight;
+    var top_height = $("#top").height();
+    var hv = (win_height-top_height)-40 + 'px';
+    $('#main_content').css('height', hv)
+
+
+  });
+
+})
 </script>

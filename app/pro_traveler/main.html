@@ -1,101 +1,39 @@
 
-<div class="container-fluid entry_container" id="menu">
-	 <div class="container">
-	 	<div data-name="data_profile" class='entry ' >数据概况</div>
-    <div data-name="popular_spots" class='entry ' >热门景点</div>
-    <div data-name="cust_profile" class='entry ' >用户概况</div>
-		<div data-name="data_table" class='entry ' >表格</div>
-		
 
-	 </div>
+<div class="container">
+  <div data-name="data_profile" class='entry ' >数据概况</div>
+  <div data-name="popular_spots" class='entry ' >热门景点</div>
+  <div data-name="cust_profile" class='entry ' >用户概况</div>
+  <div data-name="data_table" class='entry ' >表格</div>
+
+<div class="dropdown select">
+    <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" style="background-color: rgb(255,255,255);">选择
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu pull-middle" role="menu" aria-labelledby="dropdownMenu1">
+        <li role="presentation" class="dropdown-header">省份</li>
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#">四川</a>
+        </li>
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#">青海</a>
+        </li>
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#">西藏</a>
+        </li>
+        <li role="presentation" class="divider"></li>
+        <li role="presentation" class="dropdown-header">月份</li>
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#">八月</a>
+        </li>
+    </ul>
 </div>
 
-	
-<div class="main_container" id='main_content'></div>
-<div style="display: none" id='detail_container_demo'>
-
-	<div class="container detail_container" ></div>
 </div>
+
 <script>
-	
-$(document).ready(function(){
-  var now_pro=$('.pro_entry_active').attr('pro');
-  var len=$('#menu .entry').length;
-  $('#menu .entry').each(function(i){
-    var dataname=$(this).attr('data-name');
-    $('#detail_container_demo').children().attr('id',dataname);
-    var demo=$('#detail_container_demo').html();
-    $('#main_content').append(demo);
-    $('#detail_container_demo').children().attr('id','xxxxyyyy');
-    $('#'+dataname).load(now_pro+'/'+dataname+'.html');
-    if(i==len-1){
-      var footer=$('#footer').html();
-      $('#main_content').append(footer);
-    }
-  })
-
-})
-
-$(document).ready(function () {
-
-	
-   $("#main_content").scroll(function () {
-  
-    	console.log('ssssssssss')
-        var items = $("#main_content").find(".detail_container");
-        var menu = $("#menu");
-        var top = $(document).scrollTop();
-        
-        var currentId = ""; //滚动条现在所在位置的item id
-        items.each(function () {
-            var m = $(this);
-            //注意：m.offset().top代表每一个item的顶部位置
-            if (top > m.offset().top - 200) {
-                currentId =  m.attr("id");
-            } else {
-                return false;
-            }
-        });
 
 
-        var currentLink = menu.find(".current");
-         
-
-        if (currentId && currentLink.attr('data-name') != currentId) {
-            currentLink.removeClass("current");
-            
-            menu.find("[data-name='"+currentId+"']").addClass("current");
-            //console.log(currentLink.attr('data-name') );
-        }
-
-      
-    });
-
-  	$(".container").delegate(".entry", "click", function (){
-	   	var d ='#'+$(this).attr('data-name');
-	   	
-	    $("#main_content").animate({scrollTop:$(d).position().top+$("#main_content").scrollTop()});
-	    console.log($(d).position().top,$("#main_content").scrollTop());
-	});    
-});
-
-
-$(document).ready(function() {
-  var win_height = window.innerHeight;
-  var top_height = $("#top").height();
-  var hv = (win_height-top_height) -40+ 'px';
-  $('#main_content').css('height', hv)
-
-  $(window).resize(function() {
-    var win_height = window.innerHeight;
-    var top_height = $("#top").height();
-    var hv = (win_height-top_height)-40 + 'px';
-    $('#main_content').css('height', hv)
-
-
-  });
-
-})
 
 
 
