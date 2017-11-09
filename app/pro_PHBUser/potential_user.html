@@ -1,0 +1,161 @@
+<div class="container_header">
+    <div class="container_title">人员概况</div>
+</div>
+
+<div class="row">
+    <div class="col-xs-6">
+    	<div class="content_title">性别占比
+            <span class="glyphicon glyphicon-question-sign content_illustrate" title="根据7月用户数据实现">
+            </span>
+        </div>
+    	<div class="content_chart" style="height:400px;width:100%;margin-top:100px;margin-left:50px" id="sexRatio"></div>
+    </div>
+    <div class="col-xs-6">
+       <div class="content_title">年龄占比
+            <span class="glyphicon glyphicon-question-sign content_illustrate" title="根据7月用户数据实现">
+            </span>
+        </div>
+        <div class="content_chart" style="height:400px;width:100%;margin-top:100px;margin-left:50px" id="ageRangePie"></div>
+    </div>
+</div>
+
+<script>
+var ageRangePie = echarts.init(document.getElementById('ageRangePie'));
+console.log('图形初始化');
+var option_age = {
+    title: {
+        //text: '年龄阶段占比',
+        //subtext: '数据来源：苏研PAAS平台',
+        x: 'center'
+    },
+    tooltip: {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    },
+    //设置饼图颜色
+    color: ['#8884d8', '#9cacf1', '#8dd1e1', '#82ca9d', '#a4de6c', '#d0ed57', '#f7e254'],
+    legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: ['小年轻', '青年', '青壮年', '中青年', '中年', '中老年', '其他']
+    },
+    series: [{
+        type: 'pie',
+        radius: '60%',
+        center: ['50%', '60%'],
+        data: [],
+        itemStyle: {
+            emphasis: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+        }
+    }]
+};
+console.log(option_age);
+
+//通过Ajax获取数据
+$.ajax({
+    type: "GET",
+    url: "pro_traveler/ageRank.json",
+    dataType: "json",
+    success: function(result) {
+        window.console.log(result);
+        if (result) {
+            $.each(result, function(index, obj) {
+                window.console.log(obj.data);
+                option_age.series[0].data.push(obj.data);
+            });
+            ageRangePie.setOption(option_age);
+        }
+    }
+});
+</script>
+
+<script type="text/javascript">
+    var sexRatio = echarts.init(document.getElementById('sexRatio'));
+    var pathSymbols = {
+        man:'path://M11.40169,6.1579c0,2.23713 2.08079,4.05793 4.65156,4.05793s4.65156,-1.81524 4.65156,-4.05793s-2.08715,-4.05793 -4.65792,-4.05793s-4.64519,1.81524 -4.64519,4.05793l-0.00001,0zm18.63804,24.81942l-3.09892,-15.33242c-0.3118,-2.43143 -2.67258,-4.32438 -5.54878,-4.32438l-5.46605,0l-0.26726,0l-4.95699,0c-2.86984,0 -5.23698,1.89296 -5.54878,4.32438l-1.73717,8.61546l-1.35538,6.71695c-0.24817,1.23237 0.59178,2.38702 1.8708,2.58131c1.27902,0.19429 2.51986,-0.63839 2.76803,-1.87075l0.62996,-3.13088l2.22715,-11.03023l1.1263,0l-2.41805,11.82406l-2.16351,10.56393l4.5052,0l0,16.79238c0,1.09914 1.02449,1.99288 2.28442,1.99288c1.25993,0 2.28442,-0.89374 2.28442,-1.99288l0,-16.79238l0.48361,0l0.26726,0l0.67451,0l0,16.75352c0,1.09914 1.02449,1.99288 2.28442,1.99288c1.25993,0 2.28442,-0.89374 2.28442,-1.99288l0,-16.74797l4.82973,0l-0.76359,-3.72486l-3.81797,-18.66314l1.1263,0l2.86347,14.16111c0.24817,1.23237 1.48901,2.06505 2.76803,1.87075c1.27266,-0.19984 2.11261,-1.35449 1.86444,-2.58686l-0.00002,0.00002z',
+        woman:'path://M68.71605,15.69178c-0.48079,-2.40517 -3.35027,-4.25869 -6.815,-4.25869l-8.12764,0l0,0.01103l-7.08211,0c-3.46474,0 -6.32658,1.84801 -6.815,4.25869c-0.04579,0.16549 -0.07632,0.33099 -0.07632,0.50751l0,10.11714l0,6.61972c0,1.20258 1.22105,2.17348 2.73211,2.17348c1.51105,0 2.73211,-0.97089 2.73211,-2.17348l0,-2.58169l0,-12.59954l1.10658,0l0,37.80965c0,1.56115 1.595,2.82442 3.55632,2.82442c1.96132,0 3.55632,-1.26326 3.55632,-2.82993l0,-19.2303l1.63316,0l0,-0.01103l0,19.24684c0,1.56115 1.595,2.82442 3.55632,2.82442c1.96132,0 3.55632,-1.26326 3.55632,-2.82993l0,-37.81517l1.10658,0l0,15.17572c0,1.20258 1.22105,2.17348 2.73211,2.17348c1.51105,0 2.73211,-0.97089 2.73211,-2.17348l0,-16.73687c0,-0.16549 -0.03053,-0.3365 -0.08395,-0.502zm-14.62211,-5.64883c3.07553,0 5.56342,-1.79836 5.56342,-4.02148c0,-2.22312 -2.4879,-4.02148 -5.56342,-4.02148s-5.56342,1.79836 -5.56342,4.02148c0,2.22312 2.49553,4.02148 5.56342,4.02148z'
+    };
+
+    var labelSetting = {
+        normal: {
+            show: true,
+            position: 'outside',
+            offset: [0, 0],
+            textStyle: {
+                fontSize: 16
+            }
+        }
+    };
+
+    var option_sex = {
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: ['女', '男']
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+            type: 'shadow'
+            }
+        },
+        grid: {
+            containLabel: true,
+            left: 20
+        },
+        yAxis: {
+            data: ['旅游人员'],
+            inverse: true,
+            axisLine: {show: false},
+            axisTick: {show: false},
+            axisLabel: {
+                margin: 30,
+                textStyle: {
+                    fontSize: 14
+                }
+            },
+            axisPointer: {
+                label: {
+                    show: true,
+                    margin: 30
+                }
+            }
+        },
+        xAxis: {
+            splitLine: {show: false},
+            axisLabel: {show: false},
+            axisTick: {show: false},
+            axisLine: {show: false}
+        },
+        series: [{
+            name: '男',
+            type: 'pictorialBar',
+            label: labelSetting,
+            symbolRepeat: true,
+            symbolSize: ['25%', '40%'],
+            barCategoryGap: '40%',
+            data: [{
+                value: 21572,
+                symbol: pathSymbols.man
+            }]
+        }, {
+            name: '女',
+            type: 'pictorialBar',
+            barGap: '10%',
+            label: labelSetting,
+            symbolRepeat: true,
+            symbolSize: ['25%', '40%'],
+            data: [{
+                value: 24841,
+                symbol: pathSymbols.woman
+            }]
+        }]
+    };
+
+    sexRatio.setOption(option_sex);
+
+</script>
