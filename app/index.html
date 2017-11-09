@@ -51,9 +51,13 @@
      <div class="pro_entry pro_entry_active" pro='pro_PHBUser'>家宽用户识别</div>
      <div style="font-size:1.3rem;float:right;width:15rem;text-align:right;">您好，火炉山岛主 退出</div>
   </div>
-</div>  
+</div>
+<div style="display: none" id='config' 
+	bs_path="http://192.168.181.234:8081"></div>  
 <div id="project" ></div>
-
+<div id='footer' style="display: none">
+	<div style='height:60px;width:100%;background-color: rgb(62,159,248)'></div>
+</div>
 
 
 </body>
@@ -72,6 +76,9 @@ $(document).ready(function(){
 
 $(document).ready(function(){	
 	$('.pro_entry').click(function(){
+		if($(this).hasClass('pro_entry_active')){
+			return;
+		}
 		$('.pro_entry').removeClass('pro_entry_active');
 		$(this).addClass('pro_entry_active');
 		var pro=$(this).attr('pro');

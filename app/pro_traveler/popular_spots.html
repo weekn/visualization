@@ -12,72 +12,93 @@
     </div>
 </div>
 <script type="text/javascript">
-
-option = {
-    tooltip : {
-        trigger: 'axis',
-        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-        }
-    },
-    legend: {
-        data: ['省内旅游人数', '省外旅游人数']
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    xAxis:  {
-        type: 'value'
-    },
-    yAxis: {
-        type: 'category',
-        data: ['九寨沟','黄龙','峨眉山','乐山','稻城','宽窄巷','青城山','四姑娘山','牛背山']
-    },
-    series: [
-        {
-            name: '省内旅游人数',
-            type: 'bar',
-            stack: '总量',
-            label: {
-                normal: {
-                    show: true,
-                    position: 'insideRight'
-                }
-            },
-            itemStyle: {
-                normal: {
-                    color: 'rgb(62,159,248)',
-                }
-                
-            },
-            data: [320, 302, 301, 334, 390, 330, 320,100,143]
+var bs_path = $('#config').attr('bs_path');
+var showBar = function(data_obj) {
+    
+    var option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+            }
         },
-        {
-            name: '省外旅游人数',
-            type: 'bar',
-            stack: '总量',
-            label: {
-                normal: {
-                    show: true,
-                    position: 'insideRight',
-                    color:'rgb(62,159,248)'
-                }
-            },
-            itemStyle: {
-                normal: {
-                    color: 'rgb(219,220,224)',
-                }
-                
-            },
-            data: [120, 132, 101, 134, 90, 230, 210,53,432]
-        }
-    ]
-};
+        legend: {
+            data: ['省内旅游人数', '省外旅游人数']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'value'
+        },
+        yAxis: {
+            type: 'category',
+            data: data_obj.y
+        },
+        series: [{
+                name: '省内旅游人数',
+                type: 'bar',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'insideRight'
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: 'rgb(62,159,248)',
+                    }
 
-charts = echarts.init(document.getElementById('hotSpots_spots'));
-charts.setOption(option);
+                },
+                data: data_obj.x_pro_inner
+            },
+            {
+                name: '省外旅游人数',
+                type: 'bar',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'insideRight',
+                        color: 'rgb(62,159,248)'
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: 'rgb(219,220,224)',
+                    }
 
+                },
+                data: data_obj.x_pro_outter
+            }
+        ]
+    };
+
+    var charts = echarts.init(document.getElementById('hotSpots_spots'));
+    charts.setOption(option);
+}
+var getBarData=function(data_name_value){
+    data_name_value=data_name_value.sort(function(a,b){
+        return a['value']-b['value'];
+    });
+    var y=[];
+    var x_pro_inner=[];
+    var x_pro_outter=[];
+    for(var i=0;i<data_name_value.length;i++){
+        var item=data_name_value[i];
+        y.push(item['name']);
+        x_pro_inner.push(item['value']);
+        x_pro_outter.push(item['value']);
+    }
+    return {y:y,x_pro_inner:x_pro_inner,x_pro_outter:x_pro_outter};
+}
+$.getJSON(bs_path + '/tourist/sicuan/spots/hot', function(json) {
+    var data_obj=getBarData(json);
+    
+    showBar(data_obj);
+})
 </script>

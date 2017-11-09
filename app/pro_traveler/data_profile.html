@@ -43,6 +43,7 @@
     </div>
 </div>
 <script type="text/javascript">
+var bs_path=$('#config').attr('bs_path');
 var showRegionHot = function(data) {
     var option = {
         backgroundColor: '#ffffff',
@@ -105,7 +106,7 @@ var getHotSpotsData=function(arr){
     })
     var new_data=[];
     var new_links=[];
-    console.log(sorted_arr)
+    
     for(var i=0;i<sorted_arr.length;i++){
         new_data.push({
             'name':sorted_arr[i]['name'],
@@ -125,7 +126,7 @@ var getHotSpotsData=function(arr){
 }
 var showHotSpots = function(data) {
     var data_obj=getHotSpotsData(data);
-    console.log(data_obj)
+    
     var option = {
         backgroundColor: '#ffffff',
         title: {
@@ -206,8 +207,34 @@ var showHotSpots = function(data) {
     hot_spots_chart = echarts.init(document.getElementById('hot_spots'));
     hot_spots_chart.setOption(option);
 }
+
+var setSymbolSizeFromValue=function(data_name_value){
+    data_name_value=data_name_value.sort(function(a,b){
+        return b['value']-a['value'];
+    })
+    var last_value=0;
+    var last_size=150;
+    for(var i=0;i<data_name_value.length;i++){
+        data_name_value[i]['symbolSize']=last_size*6/7;
+        last_size=last_size*5/6;
+    }
+    return data_name_value;
+}
 $.getJSON('plugins/js/echarts3/map/json/province/sichuan.json', function(json) {
     echarts.registerMap('sichuan', json);
+    $.getJSON(bs_path+'/tourist/sicuan/region/hot', function(json_region_hot) {
+        showRegionHot(json_region_hot);
+    })
+    $.getJSON(bs_path+'/tourist/sicuan/spots/hot', function(json_spots_hot) {
+        var data=setSymbolSizeFromValue(json_spots_hot)
+        showHotSpots(data);
+    })
+   
+
+})
+
+
+
     data = [
         { name: '绵阳市', value: 100 },
         { name: '成都市', value: 210 },
@@ -232,7 +259,8 @@ $.getJSON('plugins/js/echarts3/map/json/province/sichuan.json', function(json) {
         { name: '甘孜藏族自治州', value: 1210 },
         { name: '凉山彝族自治州', value: 4110 },
     ];
-   hot_spot_data=[{
+
+    hot_spot_data=[{
                 "name": "稻城",
                 "symbolSize": 110,
             }, {
@@ -272,10 +300,6 @@ $.getJSON('plugins/js/echarts3/map/json/province/sichuan.json', function(json) {
                 "symbolSize": 68,
                 "value": 1
             }]
-    showRegionHot(data);
-   // getHotSpotsData(hot_spot_data);
-    showHotSpots(hot_spot_data);
-})
 </script>
 
 

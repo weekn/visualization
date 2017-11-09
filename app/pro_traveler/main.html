@@ -20,19 +20,18 @@
 	
 $(document).ready(function(){
   var now_pro=$('.pro_entry_active').attr('pro');
-
-  // $('#hot_spot').load('pro_traveler/hot_spot.html');
-  // $('#data_table').load('pro_traveler/data_table.html');
-  // $('#dash_board').load('pro_traveler/dash_board.html');
-
+  var len=$('#menu .entry').length;
   $('#menu .entry').each(function(i){
     var dataname=$(this).attr('data-name');
     $('#detail_container_demo').children().attr('id',dataname);
     var demo=$('#detail_container_demo').html();
     $('#main_content').append(demo);
     $('#detail_container_demo').children().attr('id','xxxxyyyy');
-    $('#'+dataname).load(now_pro+'/'+dataname+'.html')
-    console.log(dataname);
+    $('#'+dataname).load(now_pro+'/'+dataname+'.html');
+    if(i==len-1){
+      var footer=$('#footer').html();
+      $('#main_content').append(footer);
+    }
   })
 
 })
