@@ -44,7 +44,20 @@
 </div>
 <script type="text/javascript">
 var bs_path=$('#config').attr('bs_path');
-var showRegionHot = function(data) {
+var showRegionHot = function(data_ori,map_json) {
+    var data=[];
+    var city_name_obj={}
+    for(var i=0;i<map_json.features.length;i++){
+        var name=map_json.features[i]['properties']['name'];
+        city_name_obj[name]=0;
+    }
+    for(var i=0;i<data_ori.length;i++){
+        var name=data_ori[i]['name'];
+        city_name_obj[name]=data_ori[i]['value'];
+    }
+    for(var name in city_name_obj){
+        data.push({name:name,value:city_name_obj[name]})
+    }
     var option = {
         backgroundColor: '#ffffff',
         visualMap: {
@@ -62,7 +75,7 @@ var showRegionHot = function(data) {
             }
         },
         geo: {
-            map: 'sichuan',
+            map: project_option.province,
             selectedMode: false,
             itemStyle: {
                 normal: {
@@ -80,7 +93,7 @@ var showRegionHot = function(data) {
         series: [{
             type: 'map',
             geoIndex: 0,
-            mapType: 'sichuan',
+            mapType: project_option.province,
             label: {
                 normal: {
                     show: false
@@ -220,12 +233,12 @@ var setSymbolSizeFromValue=function(data_name_value){
     }
     return data_name_value;
 }
-$.getJSON('plugins/js/echarts3/map/json/province/sichuan.json', function(json) {
-    echarts.registerMap('sichuan', json);
-    $.getJSON(bs_path+'/tourist/sicuan/region/hot', function(json_region_hot) {
-        showRegionHot(json_region_hot);
+$.getJSON('plugins/js/echarts3/map/json/province/'+project_option.province+'.json', function(json) {
+    echarts.registerMap(project_option.province, json);
+    $.getJSON(bs_path+'/tourist/'+project_option.province+'/region/hot', function(json_region_hot) {
+        showRegionHot(json_region_hot,json);
     })
-    $.getJSON(bs_path+'/tourist/sicuan/spots/hot', function(json_spots_hot) {
+    $.getJSON(bs_path+'/tourist/'+project_option.province+'/spots/hot', function(json_spots_hot) {
         var data=setSymbolSizeFromValue(json_spots_hot)
         showHotSpots(data);
     })

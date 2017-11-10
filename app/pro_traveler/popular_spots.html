@@ -96,7 +96,7 @@ var getBarData=function(data_name_value){
     }
     return {y:y,x_pro_inner:x_pro_inner,x_pro_outter:x_pro_outter};
 }
-$.getJSON(bs_path + '/tourist/sicuan/spots/hot', function(json) {
+$.getJSON(bs_path + '/tourist/'+project_option.province+'/spots/hot', function(json) {
     var data_obj=getBarData(json);
     
     showBar(data_obj);

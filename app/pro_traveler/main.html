@@ -1,5 +1,15 @@
+<script>
+var project_option={
+  province:'sichuan'
+}
+var changeProvince=function(province){
+  project_option.province=province;
+  loadProjectEntry();
+}
 
 
+
+</script>
 <div class="container">
   <div data-name="data_profile" class='entry ' >数据概况</div>
   <div data-name="popular_spots" class='entry ' >热门景点</div>
@@ -13,23 +23,24 @@
     <ul class="dropdown-menu pull-middle" role="menu" aria-labelledby="dropdownMenu1">
         <li role="presentation" class="dropdown-header">省份</li>
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="#">四川</a>
+            <a role="menuitem" tabindex="-1" href="javascript:changeProvince('sichuan')">四川</a>
         </li>
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="#">青海</a>
+            <a role="menuitem" tabindex="-1" href="javascript:changeProvince('qinghai')">青海</a>
         </li>
         <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="#">西藏</a>
+            <a role="menuitem" tabindex="-1" href="javascript:changeProvince('xizang')">西藏</a>
         </li>
         <li role="presentation" class="divider"></li>
         <li role="presentation" class="dropdown-header">月份</li>
-        <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="#">八月</a>
-        </li>
+
+        
     </ul>
 </div>
+      
 
 </div>
+
 
 <script>
 
