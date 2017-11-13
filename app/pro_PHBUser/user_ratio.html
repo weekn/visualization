@@ -1,0 +1,316 @@
+
+<div class="container_header">
+    <div class="container_title">用户占比</div>
+</div>
+<div class="row">
+    <div class="col-xs-6">
+        <div class="content_title">热度地图
+            <span class='content_botton'>热力图</span>
+            <span class='content_botton'>热点图</span>
+        </div>
+        <div class="content_chart" style="height:400px;width:100%" id="test_map"></div>
+    </div>
+    <div class="col-xs-6">
+        <div class="content_title">
+            热度排名
+            <span class="glyphicon glyphicon-question-sign content_illustrate" title="根据7月用户数据实现">
+            </span>
+        </div>
+        <div class="content_chart" style="height:400px;width:100%;" id="hot_bar_chart"></div>
+    </div>
+</div>
+
+<script>
+    var data = [
+        {name:"广州",value:210},
+        {name:"佛山",value:180},
+        {name:"东莞",value:203},
+        {name:"深圳",value:162},
+        {name:"惠州",value:120},
+        {name:"珠海",value:102},
+        {name:"汕头",value:130}
+    ];
+
+    var geoCoordMap = {
+        "广州":[113.23,23.16],
+        "佛山":[113.11,23.05],
+        "东莞":[113.75,23.04],
+        "深圳":[114.07,22.62],
+        "惠州":[114.4,23.09],
+        "珠海":[113.52,22.3],
+        "汕头":[116.69,23.39]
+    };
+
+    var convertData = function(data){
+        var res = [];
+        for(var i = 0; i< data.length; i++){
+            var geoCoord = geoCoordMap[data[i].name];
+            if(geoCoord){
+                res.push({
+                    name:data[i].name,
+                    value:geoCoord.concat(data[i].value)
+                })
+            }
+        }
+        return res;
+    };
+
+    function renderItem(params, api) {
+    var coords = [
+        [116.7,39.53],
+        [103.73,36.03],
+        [112.91,27.87],
+        [120.65,28.01],
+        [119.57,39.95]
+    ];
+    var points = [];
+    for (var i = 0; i < coords.length; i++) {
+        points.push(api.coord(coords[i]));
+    }
+    var color = api.visual('color');
+
+    return {
+        type: 'polygon',
+        shape: {
+            points: echarts.graphic.clipPointsByRect(points, {
+                x: params.coordSys.x,
+                y: params.coordSys.y,
+                width: params.coordSys.width,
+                height: params.coordSys.height
+            })
+        },
+        style: api.style({
+            fill: color,
+            stroke: echarts.color.lift(color)
+        })
+    };
+    }
+
+    option = {
+    backgroundColor: '#404a59',
+    title: {
+        text: '全国主要城市空气质量',
+        subtext: 'data from PM25.in',
+        sublink: 'http://www.pm25.in',
+        left: 'center',
+        textStyle: {
+            color: '#fff'
+        }
+    },
+    tooltip : {
+        trigger: 'item'
+    },
+    bmap: {
+        center: [104.114129, 37.550339],
+        zoom: 5,
+        roam: true,
+        mapStyle: {
+            styleJson: [
+                    {
+                        "featureType": "water",
+                        "elementType": "all",
+                        "stylers": {
+                            "color": "#044161"
+                        }
+                    },
+                    {
+                        "featureType": "land",
+                        "elementType": "all",
+                        "stylers": {
+                            "color": "#004981"
+                        }
+                    },
+                    {
+                        "featureType": "boundary",
+                        "elementType": "geometry",
+                        "stylers": {
+                            "color": "#064f85"
+                        }
+                    },
+                    {
+                        "featureType": "railway",
+                        "elementType": "all",
+                        "stylers": {
+                            "visibility": "off"
+                        }
+                    },
+                    {
+                        "featureType": "highway",
+                        "elementType": "geometry",
+                        "stylers": {
+                            "color": "#004981"
+                        }
+                    },
+                    {
+                        "featureType": "highway",
+                        "elementType": "geometry.fill",
+                        "stylers": {
+                            "color": "#005b96",
+                            "lightness": 1
+                        }
+                    },
+                    {
+                        "featureType": "highway",
+                        "elementType": "labels",
+                        "stylers": {
+                            "visibility": "off"
+                        }
+                    },
+                    {
+                        "featureType": "arterial",
+                        "elementType": "geometry",
+                        "stylers": {
+                            "color": "#004981"
+                        }
+                    },
+                    {
+                        "featureType": "arterial",
+                        "elementType": "geometry.fill",
+                        "stylers": {
+                            "color": "#00508b"
+                        }
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "all",
+                        "stylers": {
+                            "visibility": "off"
+                        }
+                    },
+                    {
+                        "featureType": "green",
+                        "elementType": "all",
+                        "stylers": {
+                            "color": "#056197",
+                            "visibility": "off"
+                        }
+                    },
+                    {
+                        "featureType": "subway",
+                        "elementType": "all",
+                        "stylers": {
+                            "visibility": "off"
+                        }
+                    },
+                    {
+                        "featureType": "manmade",
+                        "elementType": "all",
+                        "stylers": {
+                            "visibility": "off"
+                        }
+                    },
+                    {
+                        "featureType": "local",
+                        "elementType": "all",
+                        "stylers": {
+                            "visibility": "off"
+                        }
+                    },
+                    {
+                        "featureType": "arterial",
+                        "elementType": "labels",
+                        "stylers": {
+                            "visibility": "off"
+                        }
+                    },
+                    {
+                        "featureType": "boundary",
+                        "elementType": "geometry.fill",
+                        "stylers": {
+                            "color": "#029fd4"
+                        }
+                    },
+                    {
+                        "featureType": "building",
+                        "elementType": "all",
+                        "stylers": {
+                            "color": "#1a5787"
+                        }
+                    },
+                    {
+                        "featureType": "label",
+                        "elementType": "all",
+                        "stylers": {
+                            "visibility": "off"
+                        }
+                    }
+            ]
+        }
+    },
+    series : [
+        {
+            name:'income',
+            type:'scatter',
+            coordinateSystem:'bmap',
+            symbolSize: function(val){
+                return val[2] / 10;
+            },
+            label: {
+                normal:{
+                    formatter:'{b}',
+                    position: 'right',
+                    show: false
+                },
+                emphasis: {
+                    show: true
+                }
+            },
+            itemSysle: {
+                normal: {
+                    color: '#ddb926'
+                }
+            }
+        },
+        {
+            name: 'Top 3',
+            type: 'effectScatter',
+            coordinateSystem: 'bmap',
+            data: convertData(data.sort(function (a, b) {
+                return b.value - a.value;
+            }).slice(0, 4)),
+            symbolSize: function (val) {
+                return val[2] / 10;
+            },
+            showEffectOn: 'emphasis',
+            rippleEffect: {
+                brushType: 'stroke'
+            },
+            hoverAnimation: true,
+            label: {
+                normal: {
+                    formatter: '{b}',
+                    position: 'right',
+                    show: true
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: '#f4e925',
+                    shadowBlur: 10,
+                    shadowColor: '#333'
+                }
+            },
+            zlevel: 1
+        },
+        {
+            type: 'custom',
+            coordinateSystem: 'bmap',
+            renderItem: renderItem,
+            itemStyle: {
+                normal: {
+                    opacity: 0.5
+                }
+            },
+            animation: false,
+            silent: true,
+            data: [0],
+            z: -10
+        }
+    ]
+    }
+
+    $(document).ready(function() {
+    var test_map = echarts.init(document.getElementById('test_map'));
+    test_map.setOption(option);
+    });
+</script>
