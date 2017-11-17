@@ -89,7 +89,7 @@ var showRegion = function(data) {
     });
     potential_region_chart.setOption(option);
 }
-var showCityMap = function(chart) {
+var showCityMap = function(loc_data) {
     
     var option = {
         geo: {
@@ -103,7 +103,7 @@ var showCityMap = function(chart) {
             seriesIndex: 0,
             calculable: true,
             inRange: {
-                color: ['rgb(219,220,224)', 'rgb(108,197,250)', 'rgb(62,159,248)']
+                color: ['rgb(219,220,224)', 'rgb(108,197,250)', 'rgb(62,159,248)','rgb(250,74,44)']
             }
         },
         bmap: {
@@ -118,8 +118,8 @@ var showCityMap = function(chart) {
                 name: '景点热度',
                 type: 'heatmap',
                 coordinateSystem: 'bmap',
-                data: data_hot,
-                pointSize: 5,
+                data: loc_data,
+                pointSize: 4,
                 blurSize: 6
             }
 
@@ -160,6 +160,7 @@ var getdetailBarData=function(data){
 }
 
 var showRegionDetail=function(data){
+
     var data_obj=getdetailBarData(data);
     option = {
         tooltip : {
@@ -227,7 +228,14 @@ var showRegionDetail=function(data){
 
 }
 var showNestLevel=function(){
-    showCityMap();
+    $.getJSON('plugins/lasa_loc.json', function(data) {
+        var loc_data=[];
+        for(var i=0;i<data.length;i++){
+            loc_data.push([data[i]['longitude'],data[i]['latitude']]);
+        }
+        showCityMap(loc_data);
+    })
+    
     showRegionDetail(data_lasa_detail);
     $('#PR_back').show();
 };
