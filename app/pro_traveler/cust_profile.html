@@ -11,20 +11,20 @@
         <!--
     	<div class="content_chart" style="height:400px;width:100%;margin-top:100px;margin-left:50px" id="sexRatio"></div>
         -->
-        <div id="content_chart" style="height:200px;width:100%;margin-top:100px;margin-left:50px" id=genderRatio>
+        <div id="content_chart" style="height:200px;width:450px;margin-top:100px;margin-left:50px" id=genderRatio>
             <svg id='gdr_svg' version="1.1" x="0" y="0" width="100%" height="100%">   
                 <g id="gdr_gm" float="left" width="250" height="200">
                 </g>
                 <g id="gdr_gf" float="right" width="250" height="200">
                 </g>
             </svg>
-            <div class="message clearfix">
-                <p>
-                    <span style="margin-left:10px">男</span>
-                    <span style="margin-left:10px" id="maleNum">男</span>
-                    <span style="margin-left:200px">女</span>
-                    <span style="margin-left:10px" id="femaleNum">女</span>
-                </p>
+            <div class="message clearfix" style="height:20px;width:450px" >
+                <div>
+                    <span position="abosulte" style="margin-left:30px">男</span>
+                    <strong position="abosulte" style="margin-left:20px" id="maleNum"></strong>
+                    <span position="abosulte" style="margin-left:180px">女</span>
+                    <strong position="abosulte" style="margin-left:20px" id="femaleNum"></strong>
+                </div>
             </div>
         </div>
     </div>
@@ -197,12 +197,19 @@ function createSVG(gender,px,py){
     var path=document.createElementNS('http://www.w3.org/2000/svg','path');
     //true is male, otherwise female
     if(gender){
-        svg.setAttribute("fill","rgb(62,159,248)");
+
+        //svg.setAttribute("fill","rgb(62,159,248)");
+//=======
+        svg.setAttribute("fill","#3E9FF8");
+
         path.setAttribute("d",path_data_male);
         //path.setAttribute("data-reactid",".0.3.0.0.$card-3.0.1.0.0.1.0.0.0.$icon-left-0.0");
     }
     else{
-        svg.setAttribute("fill","rgb(145,148,181) ");
+       // svg.setAttribute("fill","rgb(145,148,181) ");
+
+        svg.setAttribute("fill","#9194B5");
+        
         path.setAttribute("d",path_data_female);
         path.setAttribute("data-reactid",".0.3.0.0.$card-3.0.1.0.0.1.0.0.1.$icon-right-49.0");
     }
@@ -245,7 +252,7 @@ $(document).ready(function(){
     var step_y = 40;
     var stop_x = parseInt(male / 5);
     var stop_y = male % 5;
-    var gap = 3;
+    var gap = 2.5;
 
     var border_x = stop_x * step_x;
     var border_y = 200;
@@ -264,7 +271,7 @@ $(document).ready(function(){
         $("#gdr_gm").append(male_svg);
     }
 
-    start_x = 250;
+    start_x = border_x + gap*step_x;
 
     stop_x = parseInt(female / 5);
     stop_y = female % 5;
@@ -272,17 +279,17 @@ $(document).ready(function(){
     border_x = start_x + stop_x * step_x;
     border_y = 200;
 
+    //画女性人数图
+    for(var k = border_y ; k >= border_y-stop_y*step_y; k = k - step_y){
+        var male_svg = createSVG(false,start_x,k);
+        $("#gdr_gf").append(male_svg);
+    }
+    start_x = start_x + step_x;
     for(var i = start_x; i < border_x; i = i + step_x){
         for(var j = 0; j < border_y; j = j + step_y){
             var male_svg = createSVG(false,i,j);
             $("#gdr_gf").append(male_svg);
         }
-        fin = i;
-    }
-    fin = fin + step_x;
-    for(var k = 0; k < step_y * stop_y; k = k + step_y){
-        var male_svg = createSVG(false,fin,k);
-        $("#gdr_gf").append(male_svg);
     }
 });
 </script>
