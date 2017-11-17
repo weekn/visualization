@@ -197,12 +197,12 @@ function createSVG(gender,px,py){
     var path=document.createElementNS('http://www.w3.org/2000/svg','path');
     //true is male, otherwise female
     if(gender){
-        svg.setAttribute("fill","#8884d8");
+        svg.setAttribute("fill","rgb(62,159,248)");
         path.setAttribute("d",path_data_male);
         //path.setAttribute("data-reactid",".0.3.0.0.$card-3.0.1.0.0.1.0.0.0.$icon-left-0.0");
     }
     else{
-        svg.setAttribute("fill","#FF3399");
+        svg.setAttribute("fill","rgb(145,148,181) ");
         path.setAttribute("d",path_data_female);
         path.setAttribute("data-reactid",".0.3.0.0.$card-3.0.1.0.0.1.0.0.1.$icon-right-49.0");
     }
