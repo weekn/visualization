@@ -51,11 +51,11 @@ var option_age = {
         formatter: "{a} <br/>{b} : {c} ({d}%)"
     },
     //设置饼图颜色
-    color: ['#8884d8', '#9cacf1', '#8dd1e1', '#82ca9d', '#a4de6c', '#d0ed57', '#f7e254'],
+    color: ['#8884d8', '#9cacf1', '#8dd1e1', '#82ca9d', '#a4de6c', '#d0ed57'],
     legend: {
         orient: 'vertical',
         left: 'left',
-        data: ['小年轻', '青年', '青壮年', '中青年', '中年', '中老年', '其他']
+        data: ['小年轻', '青年', '中青年', '中年', '中老年', '老年']
     },
     series: [{
         type: 'pie',
@@ -76,14 +76,14 @@ console.log(option_age);
 //通过Ajax获取数据
 $.ajax({
     type: "GET",
-    url: "pro_traveler/ageRank.json",
+    url: "http://192.168.181.234:8081/tourist/sichuan/profile/age",
     dataType: "json",
     success: function(result) {
         window.console.log(result);
         if (result) {
             $.each(result, function(index, obj) {
-                window.console.log(obj.data);
-                option_age.series[0].data.push(obj.data);
+                window.console.log(obj.value);
+                option_age.series[0].data.push(obj);
             });
             ageRangePie.setOption(option_age);
         }
@@ -223,13 +223,13 @@ $(document).ready(function(){
     //ajax
     $.ajax({
         type:"GET",
-        url:'pro_traveler/gender.json',
+        url:'http://192.168.181.234:8081/tourist/sichuan/profile/gender',
         dataType:'json',
         async:false,
         success:function(data,textStatus,jqXHR){
             console.log(data);
-            m = data[0]['count'];
-            f = data[1]['count'];
+            m = data[1]['value'];
+            f = data[0]['value'];
             male = Math.round(100*m/(m+f));
             female = Math.round(100*f/(m+f));
             console.log(male);

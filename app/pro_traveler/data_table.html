@@ -238,7 +238,7 @@ $(document).ready(function(){
     
         var dataColumns=['msisdn','statist_month','cmcc_prov_prvd_id','ascription','gender','age'];
         var exportColumns=['手机','月份','省份','城市','性别','年龄'];
-        $.getJSON("http://192.168.181.234:8081/tourist/sichuan/tourists?length=20000",function(data){ 
+        $.getJSON("http://192.168.181.234:8081/tourist/sichuan/tourists?length=2000",function(data){ 
 
             var JSONData=dataToExportJson(data.data,dataColumns,exportColumns,false);
             JSONToCSVConvertor(JSONData, '旅游', true);
