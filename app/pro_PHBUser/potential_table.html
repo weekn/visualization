@@ -6,25 +6,44 @@
 </div>
 <div class="row">
     <div class="col-xs-12" style="padding-top:15px;padding-bottom:15px;">
+         
+      
+    <form>  
+        <span>日期:</span> <input type="text" placeholder="日期" id="date-search">  
+        <span>城市:</span> <input type="text" placeholder="城市" id="city-search">  
+        <span>是否高价值用户:</span> <select id="gender-search">  
+            <option value="">全部</option>  
+            <option value="0">是</option>  
+            <option value="1">否</option>  
+           
+        </select>  
+        <button type="button" id="btn_search" class="btn btn-default" style="border-radius=0">查询</button>  
+        
+    </form>  
      <table id="example0" class="table display" >
-        <thead style="border-bottom:rgb(62,159,248)">
+         
+        <thead >
             <tr>
-                <th>姓名</th>
-                <th>手机号</th>
+                <th>手机</th>
+                <th>日期</th>
+                <th>省份</th>
+                <th>地区</th>
                 <th>性别</th>
-                <th>归属地</th>
-                <th>常驻小区</th>
                 <th>年龄</th>
+                <th>居住地</th>
+                <th>是否高价值用户</th>
             </tr>
         </thead>
         <tfoot>
-            <tr>
-                <th>姓名</th>
-                <th>手机号</th>
+           <tr>
+                <th>手机</th>
+                <th>日期</th>
+                <th>省份</th>
+                <th>地区</th>
                 <th>性别</th>
-                <th>归属地</th>
-                <th>常驻小区</th>
                 <th>年龄</th>
+                <th>居住地</th>
+                <th>是否高价值用户</th>
             </tr>
         </tfoot>
     </table>
@@ -50,25 +69,28 @@
 
 <script>
 $(document).ready(function() {
-    $('#example0').DataTable({
-       dom: 'Bfrtip',
+    var dataTablesSettings ={
+        dom:  '<"top"ip>rt<"bottom"B><"clear">',
         buttons: [ {
-            
              text: '下载',
-            
-            }
         } ],
+        pagingType: "simple_numbers",//设置分页控件的模式 
+        searching: false,//屏蔽datatales的查询框  
+        aLengthMenu:[10],//设置一页展示10条记录  
+        bLengthChange: false,//屏蔽tables的一页展示多少条记录的下拉列表
         processing: true,
         serverSide: true,
         ordering: false,
-        ajax:"http://localhost:8080/visualization_bs/customers",
+        ajax:"http://192.168.181.234:8081/bbcustomer/sichuan/customers",
         columns: [   
-                {"data" : "name"},  
-                {"data" : "phone"},  
-                {"data" : "sex"},
-                 {"data" : "location"},  
-                {"data" : "attribution"},  
-                {"data" : "age"}  
+                {"data" : "msisdn"},  
+                {"data" : "statist_month"},  
+                {"data" : "cmcc_prov_prvd_id"},
+                {"data" : "ascription"},  
+                {"data" : "gender"},  
+                {"data" : "age"},  
+                {"data" : "resident_area"},  
+                {"data" : "is_high_value"}  
                 ] ,
        language: {
         "sProcessing": "处理中...",
@@ -93,9 +115,7 @@ $(document).ready(function() {
             "sSortAscending": ": 以升序排列此列",
             "sSortDescending": ": 以降序排列此列"
         }
-    },
-   
-
+        },
        initComplete: function () {
             var api = this.api();
             api.columns([1,3,4]).indexes().flatten().each( function ( i ) {
@@ -116,17 +136,122 @@ $(document).ready(function() {
             } );
         }
     }
-      );
+    var dataTable = $('#example0').DataTable(dataTablesSettings);
+   $('#btn_search').click(function () {
+                //这里重新设置参数
+                dataTablesSettings.fnServerParams = function (aoData) {
+                    aoData._rand = Math.random();
+                    aoData.push(
+                        { "name": "statist_month", "value": $('#date-search').val() },
+                        { "name": "ascription", "value": $('#city-search').val() },
+                        { "name": "gender", "value": $('#gender-search').val() }
+                        
+                        );
+                }
+                //搜索就是设置参数，然后销毁datatable重新再建一个
+                dataTable.fnDestroy(false);
+                dataTable = $("#example0").dataTable(dataTablesSettings);
+                //搜索后跳转到第一页
+                dataTable.fnPageChange(0);
+            });
+} );
+$(document).ready(function(){   
+
+
+
+    var  dataToExportJson=function(dataArray,dataColumns,exportColumns,formatColumns){
+        if(dataColumns.length != exportColumns.length){
+            return null;
+        }
+        let exportDataArg = [];
+        //遍历原数组
+        for(let j = 0;j<dataArray.length;j++){
+            let tempObject = {};
+            //遍历对象，拿到对象属性
+            for(let i = 0;i<dataColumns.length;i++){
+                let tempData = dataArray[j][dataColumns[i]];
+                if(formatColumns){
+                    //判断是否需要格式转换
+                    if(formatColumns[i] != null && formatColumns[i] != ""){
+                        tempData = formatColumns[i](tempData);
+                    }
+                }
+                tempObject[exportColumns[i]] = tempData;
+            }
+            exportDataArg.push(tempObject);
+        }
+        return exportDataArg;
+    };
+ /**
+     * 导出csv数据
+     * @param JSONData
+     * @param ReportTitle
+     * @param ShowLabel
+     * @constructor
+     */
+    var JSONToCSVConvertor=function(JSONData, ReportTitle, ShowLabel) {
+        var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+        var fileName = "";
+        fileName += ReportTitle.replace(/ /g,"_") + "报表数据";
+        var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+        var isOpera = userAgent.indexOf("Opera") > -1; //判断是否Opera浏览器
+        var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera; //判断是否IE浏览器
+        var CSV = 'data:text/csv;charset=utf-8,\ufeff';
+        if(isIE){
+            CSV = '\ufeff';
+        }
+        CSV += ReportTitle + '\r\n\n';
+        if (ShowLabel) {
+            var row = "";
+            for (var index in arrData[0]) {
+                row += index + ',';
+            }
+            row = row.slice(0, -1);
+            CSV += row + '\r\n';
+        }
+        for (var i = 0; i < arrData.length; i++) {
+            var row = "";
+            for (var index in arrData[i]) {
+                row += '"' + arrData[i][index] + '",';
+            }
+            row.slice(0, row.length - 1);
+            CSV += row + '\r\n';
+        }
+        if (CSV == '') {
+            alert("Invalid data");
+            return;
+        }
+        //IE只能使用Blob文件下载，不支持URI，详见:
+        //https://technet.microsoft.com/ZH-CN/Library/hh779016.aspx
+        if(isIE){
+            var blob = new Blob([decodeURIComponent(encodeURI(CSV))], {
+                type: "text/csv;charset=utf-8;"
+            });
+            window.navigator.msSaveBlob(blob, fileName + ".csv")
+        }
+        else{
+            var link = document.createElement("a");
+            link.href = encodeURI(CSV);
+            link.style = "visibility:hidden";
+            link.download = fileName + ".csv";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    };
+    
     $('.dt-button').click(function(){
     
-        var dataColumns=['name','value'];
-        var exportColumns=['用户名','性别'];
-        $.getJSON("http://192.168.181.234:8081/tourist/sichuan/profile/age",function(data){ 
+        var dataColumns=['msisdn','statist_month','cmcc_prov_prvd_id','ascription','gender','age','resident_area','is_high_value'];
+        var exportColumns=['手机','月份','省份','地区','性别','年龄','居住地','是否高价值用户'];
+        $.getJSON("http://192.168.181.234:8081/bbcustomer/sichuan/customers?length=2000",function(data){ 
 
-            var JSONData=dataToExportJson(data,dataColumns,exportColumns,false);
-            JSONToCSVConvertor(JSONData, "家宽", true);
+            var JSONData=dataToExportJson(data.data,dataColumns,exportColumns,false);
+            JSONToCSVConvertor(JSONData, '家宽', true);
+
         }); 
 
     })
-} );
+
+});
 </script>
